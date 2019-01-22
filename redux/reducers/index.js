@@ -1,9 +1,7 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { Provider, connect, combineReducers } from 'react-redux';
+import { combineReducers } from 'redux';
 
-import reducer from './someReducer';
-import RepoList from './RepoList';
+import items from './items';
 
 export default combineReducers({
-  someReducer: reducer,
+  items,
 })
