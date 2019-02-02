@@ -1,3 +1,4 @@
+import './polyfills.js';
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
@@ -11,6 +12,8 @@ export default class App extends React.Component {
   };
 
   render() {
+    const { persistor, store } = configStore();
+
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -20,6 +23,8 @@ export default class App extends React.Component {
         />
       );
     } else {
+      console.log(store);
+      console.log('>>>>>STORE>>>>>>>')
       return (
         <Provider store={store}>
           <View style={styles.container}>
@@ -57,6 +62,7 @@ export default class App extends React.Component {
     this.setState({ isLoadingComplete: true });
   };
 }
+
 
 const styles = StyleSheet.create({
   container: {

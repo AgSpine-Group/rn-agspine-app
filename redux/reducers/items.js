@@ -2,7 +2,7 @@ import C from '../constants';
 import initialState from '../initial_state';
 
 
-export default (state = initialState.login, action) => {
+export default (state = initialState.items, action) => {
   const { data, error } = action;
   switch (action.type) {
     case 'FETCH_ITEMS_REQUEST': {
