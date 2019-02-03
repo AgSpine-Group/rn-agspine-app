@@ -1,11 +1,40 @@
 import './polyfills.js';
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, NetInfo, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import configStore from './redux/store';
+import connectionState from './redux/actions/connection';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react'
+
+class NetworkWrapper extends React.PureComponent {
+  componentDidMount() {
+
+    console.log('>>>>>>>>>>>>>>>>>>>>.');
+    console.log(this.props.dispatch)
+    console.log('>>>>>>>>>>>>>>>>>>>>.');
+    NetInfo.isConnected.addEventListener('change', this._handleConnectionChange);
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('change', this._handleConnectionChange);
+  }
+
+  _handleConnectionChange = (isConnected) => {
+
+    console.log(this.props);
+    console.log('>>>>>>>CONNECTION STATUS>>>>>>>>>>>')
+    console.log(`>>>>>>>${isConnected}>>>>>>>>>>>`)
+    this.props.dispatch(connectionState({ status: isConnected }));
+  };
+
+  render() {
+    return (
+      this.props.children
+    )
+  }
+}
 
 
 export default class App extends React.Component {
@@ -13,12 +42,26 @@ export default class App extends React.Component {
     isLoadingComplete: false,
   };
 
+  // componentDidMount() {
+  //   NetInfo.isConnected.addEventListener('change', this._handleConnectionChange);
+  // }
+
+  // componentWillUnmount() {
+  //   NetInfo.isConnected.removeEventListener('change', this._handleConnectionChange);
+  // }
+
+  // _handleConnectionChange = (isConnected) => {
+
+  //   console.log(this.props);
+  //   console.log('>>>>>>>CONNECTION STATUS>>>>>>>>>>>')
+  //   console.log(`>>>>>>>${isConnected}>>>>>>>>>>>`)
+  //   dispatch(connectionState({ status: isConnected }));
+  // };
+
   render() {
     const { persistor, store } = configStore();
 
     persistor.purge();
-    console.log(persistor);
-    console.log('>>>>>>>>>>>');
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -28,15 +71,15 @@ export default class App extends React.Component {
         />
       );
     } else {
-      console.log(store);
-      console.log('>>>>>STORE>>>>>>>')
       return (
         <Provider store={store}>
           <PersistGate persistor={persistor}>
-            <View style={styles.container}>
-              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-              <AppNavigator />
-            </View>
+            <NetworkWrapper dispatch={store.dispatch}>
+              <View style={styles.container}>
+                {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+                <AppNavigator />
+              </View>
+            </NetworkWrapper>
           </PersistGate>
         </Provider>
       );

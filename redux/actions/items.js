@@ -1,54 +1,51 @@
 import uuid from 'uuid-v4';
 import { LOCAL_STORAGE_PATHS } from '../constants'
-// const fetchItemsError = (error) => {
-//   return {
-//     type: 'FETCH_ITEMS_ERROR',
-//     error
-//   };
-// }
-// const fetchItemsSuccess = (data) => {
-//   return {
-//     type: 'FETCH_ITEMS_SUCCESS',
-//     data
-//   };
-// }
 
-// const fetchItemsRequest = () => {
-//   return {
-//     type: 'FETCH_ITEMS_REQUEST',
-//   };
-// }
-
-// const fetchItemsAsync = (data) => async (dispatch) => {
-//   dispatch(fetchItemsRequest());
-//   return dispatch(fetchItemsSuccess(data));
-// }
-
-const submitFormDataSuccess = (data, key) => ({
-  type: 'SUBMIT_FORM_DATA_SUCCESS',
+const submitFormDataSuccess = ({ data, key }) => ({
+  type: 'SUBMIT_FORM_SUCCESS',
   data,
   key
 })
 
-const submitFormDataRequest = () => ({
-  type: 'SUBMIT_FORM_DATA_REQUEST',
-  loading: true
+const submitFormDataRequest = ({ data, formId, key }) => ({
+  type: 'SUBMIT_FORM_REQUEST',
+  loading: true,
+  meta: {
+    offline: {
+      // the network action to execute:
+      effect: {
+        url: `/v1/form/${formId}/new`, method: 'POST', json: { data }
+      },
+      // action to dispatch when effect succeeds:
+      commit: {
+        type: 'SUBMIT_FORM_COMMIT', meta: { key, data }
+      },
+      // action to dispatch if network action fails permanently:
+      rollback: {
+        type: 'SUBMIT_FORM_ROLLBACK', meta: { key, data }
+      }
+    }
+  }
 })
 
 const submitFormDataFailure = (error) => ({
-  type: 'SUBMIT_FORM_DATA_FAILURE',
+  type: 'SUBMIT_FORM_FAILURE',
   loading: true,
   error,
 })
 
 const submitFormDataAsync = (data, formId) => async (dispatch) => {
-  const key = uuid()
-  const localStorageKey = LOCAL_STORAGE_PATHS['formData'](formId, key);
+  const uniqueKey = uuid()
+  const localStorageKey = LOCAL_STORAGE_PATHS['formData'](formId, uniqueKey);
+
+  const payload = { ...data, syncId: uniqueKey };
 
   try {
-    dispatch(submitFormDataRequest());
-    dispatch(submitFormDataSuccess(data, localStorageKey));
+    dispatch(submitFormDataRequest({ data: payload, formId, key: localStorageKey }));
+    dispatch(submitFormDataSuccess({ data: payload, localStorageKey }));
   } catch (ex) {
+    console.log(ex);
+    console.log('EX THROWN FROM ACTION');
     dispatch(submitFormDataFailure(ex));
   }
 }

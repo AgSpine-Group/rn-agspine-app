@@ -6,11 +6,11 @@ const getData = (key) => key.split('|');
 
 export default (state = initialState.formData, action) => {
   switch (action.type) {
-    case 'SUBMIT_FORM_DATA_REQUEST': {
+    case 'SUBMIT_FORM_REQUEST': {
       return { state, loading: true }
     }
 
-    case 'SUBMIT_FORM_DATA_FAILURE': {
+    case 'SUBMIT_FORM_FAILURE': {
       const { error } = action;
       return {
         state,
@@ -21,7 +21,7 @@ export default (state = initialState.formData, action) => {
         }
       }
     }
-    case 'SUBMIT_FORM_DATA_SUCCESS': {
+    case 'SUBMIT_FORM_SUCCESS': {
       const { data, key } = action;
       const [formId, formRecordId] = getData(key);
 
