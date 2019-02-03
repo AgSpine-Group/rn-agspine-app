@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { ScrollView, StyleSheet, Button, FlatList, View } from 'react-native';
 import { submitFormDataAsync } from '../redux/actions/items';
 import forms from '../forms';
-import FormScreen from './FormScreen';
 import { Container, Header, Content, List, ListItem, Text } from 'native-base';
 
 import { StackActions, NavigationActions } from 'react-navigation';
@@ -36,9 +35,6 @@ class FormsScreen extends React.Component {
     title: 'Forms',
   };
 
-  updateItems = () => {
-    return this.props.fetchItemsAsync(fakeItems)
-  }
   render() {
     const { items, navigation } = this.props
 
@@ -68,15 +64,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   item: {
     padding: 10,
     fontSize: 18,
     height: 44,
-    border: 1,
     backgroundColor: 'grey',
-    border: 1
   },
   title: {
     fontSize: 22,

@@ -1,6 +1,6 @@
+import items from './items';
+
+import formData from './form';
 import { combineReducers } from 'redux';
 
-import items from './items';
-import form from './form';
-
-export { items, form };
+export default combineReducers({ formData, items });

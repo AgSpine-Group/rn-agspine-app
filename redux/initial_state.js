@@ -1,8 +1,4 @@
 export default {
-  login: {
-    id: '',
-    name: 'magic'
-  },
   items: {
     loading: false,
     error: null,
@@ -13,7 +9,7 @@ export default {
   formData: {
     loading: false,
     error: false,
-    data: [],
+    data: {},
     meta: {
       totalAvailable: 0
     }
@@ -22,6 +18,7 @@ export default {
     loading: false,
     error: false,
     data: {},
+    firFighter: {},
     meta: {
       totalSubmitted: 0,
       totalUploaded: 0,

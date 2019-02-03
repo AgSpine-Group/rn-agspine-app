@@ -3,8 +3,10 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
-import store from './redux/store';
+import configStore from './redux/store';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react'
+
 
 export default class App extends React.Component {
   state = {
@@ -14,6 +16,9 @@ export default class App extends React.Component {
   render() {
     const { persistor, store } = configStore();
 
+    persistor.purge();
+    console.log(persistor);
+    console.log('>>>>>>>>>>>');
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -27,10 +32,12 @@ export default class App extends React.Component {
       console.log('>>>>>STORE>>>>>>>')
       return (
         <Provider store={store}>
-          <View style={styles.container}>
-            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-            <AppNavigator />
-          </View>
+          <PersistGate persistor={persistor}>
+            <View style={styles.container}>
+              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+              <AppNavigator />
+            </View>
+          </PersistGate>
         </Provider>
       );
     }

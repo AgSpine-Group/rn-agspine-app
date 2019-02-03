@@ -1,14 +1,13 @@
 import C from '../constants';
 import initialState from '../initial_state';
+import _ from 'lodash';
 
-// `formData|${recordTypeId}|${recordId}`
-
-const [formId, formRecordId] = (key) => key.split('|');
+const getData = (key) => key.split('|');
 
 export default (state = initialState.formData, action) => {
   switch (action.type) {
     case 'SUBMIT_FORM_DATA_REQUEST': {
-      return { state, ...{ loading: true } }
+      return { state, loading: true }
     }
 
     case 'SUBMIT_FORM_DATA_FAILURE': {
@@ -24,15 +23,15 @@ export default (state = initialState.formData, action) => {
     }
     case 'SUBMIT_FORM_DATA_SUCCESS': {
       const { data, key } = action;
-      const { formId, formRecordId } = getPathFromKey(key);
+      const [formId, formRecordId] = getData(key);
 
-      console.log(data, key);
-      console.log('KEY AND DATA HERE');
-      return {
-        state: {
-          data: [...state.data, { ...data, formId, formRecordId }]
-        }
-      }
+      const newData = { ...state.data };
+      const dataObject = _.set(newData, `${formId}.${formRecordId}`, data);
+
+      return Object.assign({}, state, {
+        loading: false,
+        data: dataObject,
+      })
     }
 
     default:
