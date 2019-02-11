@@ -10,22 +10,14 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 class NetworkWrapper extends React.PureComponent {
   componentDidMount() {
-
-    console.log('>>>>>>>>>>>>>>>>>>>>.');
-    console.log(this.props.dispatch)
-    console.log('>>>>>>>>>>>>>>>>>>>>.');
-    NetInfo.isConnected.addEventListener('change', this._handleConnectionChange);
+    NetInfo.isConnected.addEventListener('connectionChange', this._handleConnectionChange);
   }
 
   componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener('change', this._handleConnectionChange);
+    NetInfo.isConnected.removeEventListener('connectionChange', this._handleConnectionChange);
   }
 
   _handleConnectionChange = (isConnected) => {
-
-    console.log(this.props);
-    console.log('>>>>>>>CONNECTION STATUS>>>>>>>>>>>')
-    console.log(`>>>>>>>${isConnected}>>>>>>>>>>>`)
     this.props.dispatch(connectionState({ status: isConnected }));
   };
 
@@ -41,22 +33,6 @@ export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
   };
-
-  // componentDidMount() {
-  //   NetInfo.isConnected.addEventListener('change', this._handleConnectionChange);
-  // }
-
-  // componentWillUnmount() {
-  //   NetInfo.isConnected.removeEventListener('change', this._handleConnectionChange);
-  // }
-
-  // _handleConnectionChange = (isConnected) => {
-
-  //   console.log(this.props);
-  //   console.log('>>>>>>>CONNECTION STATUS>>>>>>>>>>>')
-  //   console.log(`>>>>>>>${isConnected}>>>>>>>>>>>`)
-  //   dispatch(connectionState({ status: isConnected }));
-  // };
 
   render() {
     const { persistor, store } = configStore();
@@ -93,18 +69,13 @@ export default class App extends React.Component {
         require('./assets/images/robot-prod.png'),
       ]),
       Font.loadAsync({
-        // This is the font that we are using for our tab bar
         ...Icon.Ionicons.font,
-        // We include SpaceMono because we use it in HomeScreen.js. Feel free
-        // to remove this if you are not using it in your app
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
       }),
     ]);
   };
 
   _handleLoadingError = error => {
-    // In this case, you might want to report the error to your error
-    // reporting service, for example Sentry
     console.warn(error);
   };
 

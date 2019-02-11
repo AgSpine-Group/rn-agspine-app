@@ -20,9 +20,6 @@ class LinksScreen extends React.Component {
   }
   render() {
     const { items } = this.props
-
-    console.log(items);
-    console.log('>>>>>>>>>>>>>>.')
     return (
       <ScrollView style={styles.container}>
         {/* Go ahead and delete ExpoLinksView and replace it with your

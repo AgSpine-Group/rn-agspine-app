@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ScrollView, StyleSheet, Button, FlatList, View } from 'react-native';
-import { submitFormDataAsync } from '../redux/actions/items';
+import { submitFormDataAsync } from '../redux/actions/submit_form';
 import forms from '../forms';
 import { Container, Header, Content, List, ListItem, Text } from 'native-base';
 

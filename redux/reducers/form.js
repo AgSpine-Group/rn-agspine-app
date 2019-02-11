@@ -22,16 +22,20 @@ export default (state = initialState.formData, action) => {
       }
     }
     case 'SUBMIT_FORM_SUCCESS': {
-      const { data, key } = action;
+      const { data, key } = action.meta;
       const [formId, formRecordId] = getData(key);
-
-      const newData = { ...state.data };
-      const dataObject = _.set(newData, `${formId}.${formRecordId}`, data);
-
-      return Object.assign({}, state, {
+      const prevState = state.state.data;
+      const dataObject = _.set(prevState, `${formId}.${formRecordId}`, data);
+      const newState = Object.assign({}, state.state.data, dataObject);
+      const finalDataShape = Object.assign({}, state, {
         loading: false,
-        data: dataObject,
-      })
+        data: newState,
+      });
+      return _.omit(finalDataShape, 'state');
+    }
+
+    case 'Offline/JS_ERROR': {
+      console.log(action.error);
     }
 
     default:
