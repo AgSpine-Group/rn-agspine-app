@@ -1,32 +1,32 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Container, Text, Card, CardItem, Content, Icon } from 'native-base';
+import { Text, Card, CardItem } from 'native-base';
 import AntIcon from "react-native-vector-icons/AntDesign";
 
-const QuickNavButton = (props) => (
-  <Card style={{ display: 'flex', flexGrow: 1 }} onClic>
-    <CardItem
-      onClick={() => { }}
-      style={styles.navContainer}
-      button
+const QuickNavButton = (props) => {
+  const { navigation, pushToPage, navHelpers } = props;
+
+  return (
+    <Card
+      style={{ display: 'flex', flexGrow: 1 }}
+      bordered={false}
     >
-      <AntIcon active name="smile-circle" size={30} color='green' style={{ paddingHorizontal: 20 }} />
-      <Text style={styles.header}>
-        Form Templates
-          {props.buttonText}</Text>
-    </CardItem>
-    <CardItem
-      onClick={() => { }}
-      style={styles.navContainer}
-      button
-    >
-      <AntIcon active name="smile-circle" size={30} color='green' style={{ paddingHorizontal: 20 }} />
-      <Text style={styles.header}>
-        Saved forms
-          {props.buttonText}</Text>
-    </CardItem>
-  </Card>
-)
+      {navHelpers.map(navItem => (
+        <CardItem
+          onPress={() => pushToPage(navItem.location, navigation)}
+          style={styles.navContainer}
+          button
+          key={navItem.location}
+        >
+          <AntIcon active name={navItem.icon} size={30} color='green' style={{ paddingHorizontal: 20 }} />
+          <Text style={styles.header}>
+            {navItem.title}
+          </Text>
+        </CardItem>
+      ))}
+    </Card>
+  )
+}
 
 const styles = StyleSheet.create({
   navContainer: {
@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#d3d3d3',
-    // border: 'none',
   }
 })
 

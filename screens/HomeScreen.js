@@ -2,23 +2,29 @@ import React from 'react';
 import {
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import QuickNavButton from '../components/QuickNav/QuickNav';
 import { Text, Container, Header, Content } from 'native-base';
+import { StackActions, NavigationActions } from 'react-navigation';
 
-const FRONT_SCREEN_HELPERS = [{
-  title: 'All forms',
-  location: 'See all forms',
-  icon: '',
-},
-{
-  title: 'Submitted forms',
-  location: 'PUSH HERE',
-  icon: '',
-}]
+const FRONT_SCREEN_HELPERS = [
+  {
+    title: 'Submitted forms',
+    location: 'SubmittedForms',
+    icon: 'smile-circle',
+  },
+  {
+    title: 'Calculators',
+    location: 'SubmittedForms',
+    icon: 'smile-circle',
+  }
+];
+
+const pushToPage = (page, navigation) => {
+  return navigation.navigate('FormsStack', {}, NavigationActions.navigate({ routeName: page }));
+}
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -26,38 +32,30 @@ export default class HomeScreen extends React.Component {
   };
 
   render() {
+    const { navigation } = this.props;
     return (
       <Container style={styles.container} >
         <Content contentContainerStyle={{ flexGrow: 1 }}>
-          <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+          <ScrollView
+            style={styles.container}
+            contentContainerStyle={styles.contentContainer}
+          >
             <View style={styles.welcomeContainer}>
               <Text style={styles.getStartedText}>Home</Text>
             </View>
             <Text style={styles.getStartedText}>
               Welcome to the ChemCert App! Click on forms to see all forms available.
             </Text>
-
-            <QuickNavButton />
-            {/* <View style={styles.helpContainer}> */}
-            {/* <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
-                <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
-              </TouchableOpacity> */}
-            {/* </View> */}
+            <QuickNavButton
+              navigation={navigation}
+              pushToPage={pushToPage}
+              navHelpers={FRONT_SCREEN_HELPERS}
+            />
           </ScrollView>
         </Content>
       </Container >
     );
   }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({

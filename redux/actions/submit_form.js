@@ -2,16 +2,6 @@ import axios from 'axios';
 import uuid from 'uuid-v4';
 import { LOCAL_STORAGE_PATHS } from '../constants'
 
-const submitFormDataSuccess = ({ data, key }) => {
-  console.log(data, key);
-  console.log('DATA', 'KEY');
-  return {
-    type: 'SUBMIT_FORM_SUCCESS',
-    data,
-    key
-  }
-}
-
 const submitFormDataRequest = ({ data, formId, key }) => {
   return {
     type: 'SUBMIT_FORM_REQUEST',
@@ -46,23 +36,9 @@ const submitFormDataAsync = (data, formId) => async (dispatch) => {
   const localStorageKey = LOCAL_STORAGE_PATHS['formData'](formId, uniqueKey);
 
   const payload = { ...data, syncId: uniqueKey };
-
-  console.log(payload);
-
   try {
     dispatch(submitFormDataRequest({ data: payload, formId, key: localStorageKey }));
-
-    // await axios.post('http://localhost:8000/test', {
-    //   data,
-    //   syncKey: uniqueKey,
-    //   formId,
-    // })
-
-    console.log('>>>>>>>>>>>>>>>>');
-    // dispatch(submitFormDataSuccess({ data: payload, key: localStorageKey }));
   } catch (ex) {
-    console.log(ex);
-    console.log('EX THROWN FROM ACTION');
     dispatch(submitFormDataFailure(ex));
   }
 }

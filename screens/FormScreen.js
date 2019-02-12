@@ -50,7 +50,6 @@ class FormScreen extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    items: state.items,
     formData: state.formData,
   };
 };

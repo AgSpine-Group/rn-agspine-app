@@ -5,7 +5,7 @@ import { submitFormDataAsync } from '../redux/actions/submit_form';
 import forms from '../forms';
 import { Container, Header, Content, List, ListItem, Text } from 'native-base';
 
-import { StackActions, NavigationActions } from 'react-navigation';
+import { StackActions } from 'react-navigation';
 
 const pushToForm = (item) => StackActions.push({
   routeName: 'Form', params: {
@@ -14,6 +14,7 @@ const pushToForm = (item) => StackActions.push({
 });
 
 const FormListComponent = (props) => {
+
   return (
     <View>
       <Text style={styles.title}>{props.title}</Text>
@@ -61,10 +62,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(FormsScreen);
 
 const styles = StyleSheet.create({
   container: {
+    display: 'flex',
     flex: 1,
     padding: 15,
     backgroundColor: '#fff',
-    // alignItems: 'center',
   },
   item: {
     padding: 10,

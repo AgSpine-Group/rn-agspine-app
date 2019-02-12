@@ -6,6 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import FormsScreen from '../screens/FormsScreen';
 import FormScreen from '../screens/FormScreen';
+import SubmittedForms from '../screens/SubmittedForms';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -27,7 +28,8 @@ HomeStack.navigationOptions = {
 
 const FormsStack = createStackNavigator({
   Forms: FormsScreen,
-  Form: FormScreen
+  Form: FormScreen,
+  SubmittedForms: SubmittedForms,
 });
 
 FormsStack.navigationOptions = {

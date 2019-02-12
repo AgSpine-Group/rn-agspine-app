@@ -18,7 +18,6 @@ export default {
     loading: false,
     error: false,
     data: {},
-    firFighter: {},
     meta: {
       totalSubmitted: 0,
       totalUploaded: 0,
