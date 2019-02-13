@@ -7,7 +7,10 @@ export default ChemForm = (props) => {
       <Content>
         <Item stackedLabel last>
           <Label>Property</Label>
-          <Input />
+          <Input
+            onChangeText={props.onChange('property')}
+            value={props.data.applicator_name}
+          />
         </Item>
         <Item stackedLabel>
           <Label>Date of application</Label>
@@ -26,11 +29,10 @@ export default ChemForm = (props) => {
         </Item>
         <Item stackedLabel>
           <Label>Paddock reference no:</Label>
-          <Input />
-        </Item>
-        <Item stackedLabel first>
-          <Label>Treatment area</Label>
-          <Input />
+          <Input
+            onChangeText={props.onChange('applicator_name')}
+            value={props.data.applicator_name}
+          />
         </Item>
       </Content>
     </Container >

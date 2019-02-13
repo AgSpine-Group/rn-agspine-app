@@ -38,10 +38,6 @@ export default class App extends React.Component {
     const { persistor, store } = configStore();
 
     persistor.purge();
-
-    console.log('this.props.navigation');
-    console.log(this.props.navigation);
-    console.log('this.props.navigation');
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading

@@ -1,11 +1,4 @@
 export default {
-  items: {
-    loading: false,
-    error: null,
-    data: [],
-    meta: {},
-    links: [],
-  },
   formData: {
     loading: false,
     error: false,
