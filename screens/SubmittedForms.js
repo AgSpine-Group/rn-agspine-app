@@ -16,7 +16,6 @@ class SubmitedList extends React.Component {
   };
 
   render() {
-    console.log(this.props.formData);
     return (
       <Container>
         <Content>
@@ -27,7 +26,6 @@ class SubmitedList extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     formData: state.formData.data || {},
   };
