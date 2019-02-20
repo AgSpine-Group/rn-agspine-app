@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { ScrollView, StyleSheet, Button, FlatList, View } from 'react-native';
 import { Container, Header, Content, List, ListItem, Text, Right } from 'native-base';
-import { StackActions } from 'react-navigation';
+// import { StackActions } from 'react-navigation';
 
-const pushToForm = (item) => StackActions.push({
-  routeName: 'Form', params: {
-    formId: item.id
-  }
-});
+// const pushToForm = (item) => StackActions.push({
+//   routeName: 'Form', params: {
+//     formId: item.id
+//   }
+// });
 
 class SubmitedList extends React.Component {
   static navigationOptions = {
@@ -19,6 +19,18 @@ class SubmitedList extends React.Component {
     return (
       <Container>
         <Content>
+          <List>
+            {
+              this.props.formData.map(data => (
+                <ListItem key={data.id}>
+                  <Text>{data.payload.data.applicator_name}</Text>
+                  <Text>{data.payload.data.date}</Text>
+                  <Text>{data.payload.data.property}</Text>
+                  <Text>{data.payload.data.formId}</Text>
+                </ListItem>
+              ))
+            }
+          </List>
         </Content>
       </Container>
     );
@@ -27,7 +39,7 @@ class SubmitedList extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    formData: state.formData.data || {},
+    formData: state.formData.data || [],
   };
 }
 
@@ -39,7 +51,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     backgroundColor: '#fff',
-    // alignItems: 'center',
   },
   item: {
     padding: 10,

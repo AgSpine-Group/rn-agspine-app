@@ -28,7 +28,6 @@ class NetworkWrapper extends React.PureComponent {
   }
 }
 
-
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
@@ -37,7 +36,7 @@ export default class App extends React.Component {
   render() {
     const { persistor, store } = configStore();
 
-    persistor.purge();
+    persistor.purge()
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading

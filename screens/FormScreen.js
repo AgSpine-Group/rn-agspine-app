@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet } from 'react-native';
 import { Title, Container, Button, Text } from 'native-base';
+import _ from 'lodash';
 import { submitFormDataAsync } from '../redux/actions/submit_form';
 import ChemForm from '../forms/chem_application_record/ChemForm';
 import forms from '../forms';
-
 class FormScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -25,10 +25,7 @@ class FormScreen extends React.Component {
 
   handleFormChange = (key) => (value) => {
     this.setState({
-      formData: {
-        ...this.state.formData,
-        [key]: value
-      }
+      formData: _.set(this.state.formData, `${key}`, value)
     })
   }
 

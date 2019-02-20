@@ -8,8 +8,6 @@ export default (state = initialState.formData, action) => {
 
   switch (action.type) {
     case 'SUBMIT_FORM_REQUEST': {
-      console.log('>>>>>>>>>>>>REQUESTING>>>>>>>>>>>>>');
-      console.log(action.payload);
       const newData =
         [
           ...state.data,
@@ -38,7 +36,6 @@ export default (state = initialState.formData, action) => {
     }
 
     case 'SUBMIT_FORM_FAILURE': {
-      console.log('>>>>>>>>>>>>>FAILFUCK>>>>>>>>>>>>>>')
       const { error } = action;
       const newData = state.data.filter(item => item.id === action.payload.syncId);
 

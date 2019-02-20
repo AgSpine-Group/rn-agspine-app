@@ -16,7 +16,7 @@ const QuickNavButton = (props) => {
           onPress={() => pushToPage(navItem.location, navigation)}
           style={styles.navContainer}
           button
-          key={navItem.location}
+          key={navItem.title}
         >
           <AntIcon active name={navItem.icon} size={30} color='green' style={{ paddingHorizontal: 20 }} />
           <Text style={styles.header}>
