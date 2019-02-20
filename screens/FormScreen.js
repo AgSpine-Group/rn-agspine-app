@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { StyleSheet } from 'react-native';
 import { Title, Container, Button, Text } from 'native-base';
 import _ from 'lodash';
-import { submitFormDataAsync } from '../redux/actions/submit_form';
+import { submitFormDataAsync } from '../redux/actions/form_submit';
 import ChemForm from '../forms/chem_application_record/ChemForm';
 import forms from '../forms';
 class FormScreen extends React.Component {

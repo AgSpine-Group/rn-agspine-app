@@ -8,7 +8,7 @@ import { LOCAL_STORAGE_PATHS } from '../constants'
 
 const submitForm = ({ data, syncId, formId }) => {
   return {
-    type: 'SUBMIT_FORM_REQUEST',
+    type: 'FORM_SUBMIT_REQUEST',
     loading: true,
     payload: {
       syncId,
@@ -23,12 +23,12 @@ const submitForm = ({ data, syncId, formId }) => {
         },
         // action to dispatch when effect succeeds:
         commit: {
-          type: 'SUBMIT_FORM_SUCCESS',
+          type: 'FORM_SUBMIT_SUCCESS',
           meta: { data, syncId }
         },
         // action to dispatch if network action fails permanently:
         rollback: {
-          type: 'SUBMIT_FORM_FAILURE',
+          type: 'FORM_SUBMIT_FAILURE',
           meta: { data, syncId },
         }
       }
@@ -37,7 +37,7 @@ const submitForm = ({ data, syncId, formId }) => {
 }
 
 const submitFormDataFailure = (error) => ({
-  type: 'SUBMIT_FORM_FAILURE',
+  type: 'FORM_SUBMIT_FAILURE',
   loading: true,
   error,
 });

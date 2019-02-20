@@ -7,7 +7,7 @@ const getData = (key) => key.split('|');
 export default (state = initialState.formData, action) => {
 
   switch (action.type) {
-    case 'SUBMIT_FORM_REQUEST': {
+    case 'FORM_SUBMIT_REQUEST': {
       const newData =
         [
           ...state.data,
@@ -21,7 +21,7 @@ export default (state = initialState.formData, action) => {
       return { ...state, data: newData, loading: true }
     }
 
-    case 'SUBMIT_FORM_SUCCESS': {
+    case 'FORM_SUBMIT_SUCCESS': {
       const updatedData = state.data.map(submittedForm => {
         if (submittedForm.id === action.meta.syncId) {
           return {
@@ -35,7 +35,7 @@ export default (state = initialState.formData, action) => {
       return { ...state, data: updatedData, loading: false }
     }
 
-    case 'SUBMIT_FORM_FAILURE': {
+    case 'FORM_SUBMIT_FAILURE': {
       const { error } = action;
       const newData = state.data.filter(item => item.id === action.payload.syncId);
 

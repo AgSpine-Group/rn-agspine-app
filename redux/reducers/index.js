@@ -1,4 +1,4 @@
-import formData from './submit_form';
+import formData from './form_submit';
 import connection from './connection';
 import { combineReducers } from 'redux';
 
