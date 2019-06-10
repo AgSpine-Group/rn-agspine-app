@@ -1,7 +1,3 @@
-// const storageTypes = {
-//   formData:
-// }
-
 export const REDUX_ACTION_TYPES = {
   CREATE_FORM_STORAGE: 'CREATE_ITEM_STORAGE'
 };
