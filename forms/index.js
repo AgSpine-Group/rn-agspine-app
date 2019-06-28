@@ -8,7 +8,8 @@ const formData = [{
     id: '123456',
     title: 'Record Chemical Application',
     component: ChemForm,
-    initialState: chemFormData
+    initialState: chemFormData,
+    description: 'Record what you have sprayed and where to keep track of how you are managing your fields'
   }]
 }];
 

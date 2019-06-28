@@ -16,7 +16,7 @@ const pushToForm = (item) => StackActions.push({
 const FormListComponent = (props) => {
 
   return (
-    <View>
+    <View style={styles.formListContainer}>
       <Text style={styles.title}>{props.title}</Text>
       <FlatList data={props.forms} renderItem={({ item }) =>
         <Button
@@ -26,7 +26,7 @@ const FormListComponent = (props) => {
           style={styles.item}
           title={item.title}
         >
-          {item.title}
+          {console.log(item.description)}
         </Button>} />
     </View>)
 }
@@ -68,12 +68,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   item: {
-    padding: 10,
     fontSize: 18,
     height: 44,
     backgroundColor: 'grey',
   },
   title: {
     fontSize: 22,
+  },
+  formListContainer: {
+    display: 'flex',
+    alignItems: 'flex-start',
   }
 });
