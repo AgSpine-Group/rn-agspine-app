@@ -1,72 +1,58 @@
 import './polyfills.js';
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, NetInfo, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import NetworkWrapper from './components/NetworkWrapper';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import configStore from './redux/store';
-import connectionState from './redux/actions/connection';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import initializeDB from './db';
 import * as firebase from 'firebase';
 import LoginScreen from './screens/LoginScreen';
 
-
-
-const Authenticated = () => {
-  const user = firebase.auth().onAuthStateChanged((user) => user)
-  if (user) {
-    return (<AppNavigator />)
+export const AuthenticationWrapper = ({ authed }) => {
+  if (authed) {
+    return <AppNavigator />
   }
 
-  return (<LoginScreen />)
-}
-class NetworkWrapper extends React.PureComponent {
-  componentDidMount() {
-    NetInfo.isConnected.addEventListener('connectionChange', this._handleConnectionChange);
-  }
+  return <LoginScreen />
+};
 
-  componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener('connectionChange', this._handleConnectionChange);
-  }
 
-  _handleConnectionChange = (isConnected) => {
-    this.props.dispatch(connectionState({ status: isConnected }));
-  };
-
-  render() {
-    return (
-      this.props.children
-    )
-  }
-}
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoadingComplete: false,
+      isLoggedIn: false,
     };
-
 
     // Initialize Firebase
     if (!firebase.apps.length) {
       initializeDB()
     };
   }
-
-
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({
+          isLoadingComplete: true,
+          isLoggedIn: true,
+        })
+      }
+    });
+  }
   render() {
     const { persistor, store } = configStore();
 
     // Clears cached storage
-    persistor.purge()
+    persistor.purge();
+    // firebase.auth().signOut();
 
     // THIS IS BROKED
-    // !this.props.skipLoadingScreen
     // if (!this.state.isLoadingComplete) {
-    //   console.log('stuck here for some reason....')
-    //   console.log(this.state.isLoadingComplete)
     //   return (
     //     <AppLoading
     //       startAsync={this._loadResourcesAsync}
@@ -82,7 +68,7 @@ export default class App extends React.Component {
           <NetworkWrapper dispatch={store.dispatch}>
             <View style={styles.container}>
               {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-              <Authenticated />
+              <AuthenticationWrapper authed={this.state.isLoggedIn} />
             </View>
           </NetworkWrapper>
         </PersistGate>

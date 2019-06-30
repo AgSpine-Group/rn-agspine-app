@@ -27,6 +27,7 @@ export default class LoginScreen extends React.Component {
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then(res => console.log(res));
     } catch (ex) {
+      console.log(ex);
       alert(ex);
     }
   }
@@ -37,6 +38,7 @@ export default class LoginScreen extends React.Component {
         .signInWithEmailAndPassword(this.state.email, this.state.password)
         .then(res => console.log(res));
     } catch (ex) {
+      console.log(ex);
       alert(ex);
     }
   }
@@ -47,6 +49,7 @@ export default class LoginScreen extends React.Component {
         .signOut()
         .then(res => console.log(res));
     } catch (ex) {
+      console.log(ex);
       alert(ex);
     }
   }
