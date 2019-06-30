@@ -27,76 +27,78 @@ export default class App extends React.Component {
     this.state = {
       isLoadingComplete: false,
       isLoggedIn: false,
+      persistor: {},
+      store: {},
     };
+
+
 
     // Initialize Firebase
     if (!firebase.apps.length) {
       initializeDB()
     };
   }
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.setState({
-          isLoadingComplete: true,
-          isLoggedIn: true,
-        })
-      }
+
+  render() {
+    if (!this.state.isLoadingComplete) {
+      return (
+        <AppLoading
+          startAsync={this._loadResourcesAsync}
+          onError={this._handleLoadingError}
+          onFinish={this._handleFinishLoading}
+        />
+      );
+    } else {
+      return (
+        <Provider store={this.state.store}>
+          <PersistGate persistor={this.state.persistor}>
+            <NetworkWrapper dispatch={this.state.store.dispatch}>
+              <View style={styles.container}>
+                {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+                <AuthenticationWrapper authed={this.state.isLoggedIn} />
+              </View>
+            </NetworkWrapper>
+          </PersistGate>
+        </Provider>
+      );
+    }
+  }
+
+  _loadResourcesAsync = async () => {
+    return Promise.all([
+      this.setPersistedState(),
+      this.checkAuth(),
+      Font.loadAsync({
+        ...Icon.Ionicons.font,
+        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+      }),
+    ]);
+  }
+
+  _handleLoadingError = error => {
+    return;
+  };
+
+  _handleFinishLoading = () => {
+    return this.setState({ isLoadingComplete: true });
+  };
+
+  setPersistedState = async () => {
+    const { persistor, store } = configStore();
+    return this.setState({
+      persistor: persistor,
+      store: store
     });
   }
-  render() {
-    const { persistor, store } = configStore();
 
-    // Clears cached storage
-    persistor.purge();
-    // firebase.auth().signOut();
+  checkAuth = async () => {
+    await firebase.auth().onAuthStateChanged(user => user && this.setState({
+      isLoggedIn: true
+    }));
 
-    // THIS IS BROKED
-    // if (!this.state.isLoadingComplete) {
-    //   return (
-    //     <AppLoading
-    //       startAsync={this._loadResourcesAsync}
-    //       onError={this._handleLoadingError}
-    //       onFinish={this._handleFinishLoading}
-    //     />
-    //   );
-    // }
-
-    return (
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <NetworkWrapper dispatch={store.dispatch}>
-            <View style={styles.container}>
-              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-              <AuthenticationWrapper authed={this.state.isLoggedIn} />
-            </View>
-          </NetworkWrapper>
-        </PersistGate>
-      </Provider>
-    );
+    return;
   }
 }
-
-_loadResourcesAsync = async () => {
-  return Promise.all([
-    Asset.loadAsync([
-      require('./assets/images/robot-dev.png'),
-      require('./assets/images/robot-prod.png'),
-    ]),
-    Font.loadAsync({
-      ...Icon.Ionicons.font,
-      'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-    }),
-  ]);
-}
-
-_handleLoadingError = error => {
-  console.warn(error);
-};
-
-_handleFinishLoading = () => {
-  this.setState({ isLoadingComplete: true });
-};
 
 const styles = StyleSheet.create({
   container: {
