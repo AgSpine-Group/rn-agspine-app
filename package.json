@@ -6,8 +6,14 @@
     "ios": "expo start --ios",
     "eject": "expo eject",
     "test": "node ./node_modules/jest/bin/jest.js --watchAll",
-    "lint": "eslint *.js **/*.js",
+    "eslint": "eslint *.js **/*.js",
     "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "jest": {
     "preset": "jest-expo"
@@ -50,14 +56,10 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.2",
+    "husky": "0.14.3",
     "jest-expo": "^32.0.0",
+    "lint-staged": "^9.0.2",
     "prettier": "^1.18.2"
   },
-  "private": true,
-  "lint-staged": {
-    "*.{js,jsx}": [
-      "eslint --fix",
-      "git add"
-    ]
-  }
+  "private": true
 }
