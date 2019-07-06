@@ -5,7 +5,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
+    "test": "node ./node_modules/jest/bin/jest.js --watchAll",
+    "lint": "eslint *.js **/*.js",
+    "precommit": "lint-staged"
   },
   "jest": {
     "preset": "jest-expo"
@@ -22,6 +24,7 @@
     "firebase": "^6.1.1",
     "lodash": "^4.17.11",
     "native-base": "^2.11.0",
+    "prop-types": "^15.7.2",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-navigation": "^3.0.9",
@@ -36,10 +39,25 @@
     "uuid-v4": "^0.1.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.5.0",
     "babel-eslint": "^10.0.1",
     "babel-preset-expo": "^5.0.0",
     "eslint": "^5.16.0",
-    "jest-expo": "^32.0.0"
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.14.2",
+    "jest-expo": "^32.0.0",
+    "prettier": "^1.18.2"
   },
-  "private": true
+  "private": true,
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  }
 }

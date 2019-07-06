@@ -6,28 +6,42 @@ import _ from 'lodash';
 import { submitFormDataAsync } from '../redux/actions/form_submit';
 import ChemForm from '../forms/chem_application_record/ChemForm';
 import forms from '../forms';
+
+const styles = StyleSheet.create({
+  formContainer: {
+    padding: 20,
+    display: 'flex',
+  },
+  formHeader: {
+    alignSelf: 'center',
+  },
+});
+
 class FormScreen extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.formId = this.props.navigation.getParam('formId', null);
     this.form = forms.map(formTypes => formTypes.forms.find(x => x.id === this.formId));
     this.state = {
-      formData: this.form[0].initialState
-    }
-  }
-  handleSubmit() {
-    const formData = this.state.formData;
-    this.props.submitFormDataAsync(formData, this.formId);
-    this.setState = {
-      formData: this.form[0].initialState
+      formData: this.form[0].initialState,
     };
   }
 
-  handleFormChange = (key) => (value) => {
+  handleSubmit = () => {
+    const { formData } = this.state;
+    this.props.submitFormDataAsync(formData, this.formId);
+    this.setState = {
+      formData: this.form[0].initialState,
+    };
+  };
+
+  handleFormChange = key => value => {
+    const current = this.state.formData;
+    const updated = _.set(current, `${key}`, value);
     this.setState({
-      formData: _.set(this.state.formData, `${key}`, value)
-    })
-  }
+      formData: updated,
+    });
+  };
 
   render() {
     const header = 'Chemical Application';
@@ -35,12 +49,10 @@ class FormScreen extends React.Component {
       <Container style={styles.formContainer}>
         <Title style={styles.formHeader}>{header}</Title>
         <ChemForm onChange={this.handleFormChange} data={this.state.formData} />
-        <Button primary full onPress={this.handleSubmit.bind(this)}>
-          <Text>
-            Create
-          </Text>
+        <Button primary full onPress={this.handleSubmit}>
+          <Text>Create</Text>
         </Button>
-      </Container >
+      </Container>
     );
   }
 }
@@ -52,20 +64,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  submitFormDataAsync
+  submitFormDataAsync,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormScreen);
-
-const styles = StyleSheet.create({
-  formContainer: {
-    padding: 20,
-    display: 'flex',
-  },
-  formHeader: {
-    alignSelf: 'center',
-  }
-});
-
-
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FormScreen);

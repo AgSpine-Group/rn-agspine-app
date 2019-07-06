@@ -1,25 +1,35 @@
-import './polyfills.js';
+import * as firebase from 'firebase';
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import NetworkWrapper from './components/NetworkWrapper';
-import { AppLoading, Asset, Font, Icon } from 'expo';
-import AppNavigator from './navigation/AppNavigator';
-import configStore from './redux/store';
+import { AppLoading, Font, Icon } from 'expo';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import PropTypes from 'prop-types';
+import NetworkWrapper from './components/NetworkWrapper';
+import AppNavigator from './navigation/AppNavigator';
+import configStore from './redux/store';
 import initializeDB from './db';
-import * as firebase from 'firebase';
 import LoginScreen from './screens/LoginScreen';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+});
 
 export const AuthenticationWrapper = ({ authed }) => {
   if (authed) {
-    return <AppNavigator />
+    return <AppNavigator />;
   }
 
-  return <LoginScreen />
+  return <LoginScreen />;
 };
 
-
+AuthenticationWrapper.propTypes = {
+  // eslint-disable-next-line
+  authed: PropTypes.bool.isRequired,
+};
 
 export default class App extends React.Component {
   constructor(props) {
@@ -31,78 +41,73 @@ export default class App extends React.Component {
       store: {},
     };
 
-
-
     // Initialize Firebase
     if (!firebase.apps.length) {
-      initializeDB()
-    };
-  }
-
-  render() {
-    if (!this.state.isLoadingComplete) {
-      return (
-        <AppLoading
-          startAsync={this._loadResourcesAsync}
-          onError={this._handleLoadingError}
-          onFinish={this._handleFinishLoading}
-        />
-      );
-    } else {
-      return (
-        <Provider store={this.state.store}>
-          <PersistGate persistor={this.state.persistor}>
-            <NetworkWrapper dispatch={this.state.store.dispatch}>
-              <View style={styles.container}>
-                {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-                <AuthenticationWrapper authed={this.state.isLoggedIn} />
-              </View>
-            </NetworkWrapper>
-          </PersistGate>
-        </Provider>
-      );
+      initializeDB();
     }
   }
 
-  _loadResourcesAsync = async () => {
+  loadResourcesAsync = async () => {
     return Promise.all([
       this.setPersistedState(),
       this.checkAuth(),
       Font.loadAsync({
         ...Icon.Ionicons.font,
-        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+
+        'space-mono':
+          // eslint-disable-next-line global-require
+          require('./assets/fonts/SpaceMono-Regular.ttf'),
       }),
     ]);
-  }
-
-  _handleLoadingError = error => {
-    return;
   };
 
-  _handleFinishLoading = () => {
+  // eslint-disable-next-line
+  handleLoadingError = error => console.log(error);
+
+  handleFinishLoading = () => {
     return this.setState({ isLoadingComplete: true });
   };
 
   setPersistedState = async () => {
     const { persistor, store } = configStore();
     return this.setState({
-      persistor: persistor,
-      store: store
+      persistor,
+      store,
     });
-  }
+  };
 
   checkAuth = async () => {
-    await firebase.auth().onAuthStateChanged(user => user && this.setState({
-      isLoggedIn: true
-    }));
+    await firebase.auth().onAuthStateChanged(
+      user =>
+        user &&
+        this.setState({
+          isLoggedIn: true,
+        })
+    );
+  };
 
-    return;
+  render() {
+    const { isLoadingComplete, isLoggedIn, store, persistor } = this.state;
+    if (!isLoadingComplete) {
+      return (
+        <AppLoading
+          startAsync={this.loadResourcesAsync}
+          onError={this.handleLoadingError}
+          onFinish={this.handleFinishLoading}
+        />
+      );
+    }
+    return (
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <NetworkWrapper dispatch={store.dispatch}>
+            <View style={styles.container}>
+              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+              <AuthenticationWrapper authed={isLoggedIn} />
+            </View>
+          </NetworkWrapper>
+        </PersistGate>
+      </Provider>
+    );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});
