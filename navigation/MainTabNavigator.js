@@ -1,5 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
+import PropTypes from 'prop-types';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
@@ -29,17 +30,18 @@ HomeStack.navigationOptions = {
 const FormsStack = createStackNavigator({
   Forms: FormsScreen,
   Form: FormScreen,
-  SubmittedForms: SubmittedForms,
+  SubmittedForms,
 });
 
 FormsStack.navigationOptions = {
   tabBarLabel: 'Forms',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
-    />
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
   ),
+};
+
+FormsStack.propTypes = {
+  focused: PropTypes.bool.isRequired,
 };
 
 export default createBottomTabNavigator({

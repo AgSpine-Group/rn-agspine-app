@@ -1,6 +1,6 @@
 import axios from 'axios';
 import uuid from 'uuid-v4';
-import { LOCAL_STORAGE_PATHS } from '../constants'
+import { LOCAL_STORAGE_PATHS } from '../constants';
 
 // Reference for inspiration
 // https://jslancer.com/blog/2017/05/23/no-internet-no-problem/
@@ -16,38 +16,39 @@ const submitForm = ({ data, syncId, formId }) => {
     loading: true,
     payload: {
       syncId,
-      data
+      data,
     },
     meta: {
       offline: {
         // the network action to execute:
         effect: {
           url: `http://localhost:8000/form-submit`,
-          method: 'POST', json: { data, formId }
+          method: 'POST',
+          json: { data, formId },
         },
         // action to dispatch when effect succeeds:
         commit: {
           type: FORM_SUBMIT_SUCCESS,
-          meta: { data, syncId }
+          meta: { data, syncId },
         },
         // action to dispatch if network action fails permanently:
         rollback: {
           type: FORM_SUBMIT_FAILURE,
           meta: { data, syncId },
-        }
-      }
-    }
-  }
-}
+        },
+      },
+    },
+  };
+};
 
-const submitFormDataFailure = (error) => ({
+const submitFormDataFailure = error => ({
   type: 'FORM_SUBMIT_FAILURE',
   loading: true,
   error,
 });
 
-const submitFormDataAsync = (data, formId) => async (dispatch) => {
-  const syncId = uuid()
+const submitFormDataAsync = (data, formId) => async dispatch => {
+  const syncId = uuid();
   const dataWithKey = { ...data, syncId, formId };
 
   console.log(data);
@@ -56,9 +57,6 @@ const submitFormDataAsync = (data, formId) => async (dispatch) => {
   } catch (ex) {
     dispatch(submitFormDataFailure(ex));
   }
-}
+};
 
-
-export {
-  submitFormDataAsync,
-}
+export { submitFormDataAsync };

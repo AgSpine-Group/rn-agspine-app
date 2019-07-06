@@ -1,7 +1,9 @@
 import * as firebase from 'firebase';
-import React from 'react';
+import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Font, Icon } from 'expo';
+import { AppLoading } from 'expo';
+import * as Icon from '@expo/vector-icons';
+import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import PropTypes from 'prop-types';

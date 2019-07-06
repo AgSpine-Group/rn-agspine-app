@@ -1,24 +1,22 @@
+import _ from 'lodash';
 import C from '../constants';
 import initialState from '../initial_state';
-import _ from 'lodash';
 
-const getData = (key) => key.split('|');
+const getData = key => key.split('|');
 
 export default (state = initialState.formData, action) => {
-
   switch (action.type) {
     case 'FORM_SUBMIT_REQUEST': {
-      const newData =
-        [
-          ...state.data,
-          {
-            id: action.payload.syncId,
-            payload: action.payload,
-            isTemp: true
-          }
-        ];
+      const newData = [
+        ...state.data,
+        {
+          id: action.payload.syncId,
+          payload: action.payload,
+          isTemp: true,
+        },
+      ];
 
-      return { ...state, data: newData, loading: true }
+      return { ...state, data: newData, loading: true };
     }
 
     case 'FORM_SUBMIT_SUCCESS': {
@@ -27,12 +25,12 @@ export default (state = initialState.formData, action) => {
           return {
             ...submittedForm,
             id: action.payload.id || syncId,
-            isTemp: false
-          }
+            isTemp: false,
+          };
         }
         return submittedForm;
-      })
-      return { ...state, data: updatedData, loading: false }
+      });
+      return { ...state, data: updatedData, loading: false };
     }
 
     case 'FORM_SUBMIT_FAILURE': {
@@ -44,10 +42,10 @@ export default (state = initialState.formData, action) => {
         ...{
           loading: false,
           hasError: true,
-          error: error,
-          data: newData
-        }
-      }
+          error,
+          data: newData,
+        },
+      };
     }
 
     case 'Offline/JS_ERROR': {
@@ -58,7 +56,6 @@ export default (state = initialState.formData, action) => {
       return state;
   }
 };
-
 
 // const { data, key } = action.meta;
 // const [formId, formRecordId] = getData(key);

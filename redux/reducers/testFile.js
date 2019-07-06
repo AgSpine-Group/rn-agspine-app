@@ -19,23 +19,19 @@
 //   }
 // }
 
-
-
-const previous =
-{
+const previous = {
   hi: [{ 123: 'magic' }],
-  hello: [{ 1: '456' }]
+  hello: [{ 1: '456' }],
 };
 
 const newData = { 2: 456 };
 
-
 const d = (data, initialState, key) => {
   if (Object.keys(initialState).includes(key)) {
     return Object.assign({}, initialState, {
-      [key]: [...initialState[key], data]
-    })
-  };
+      [key]: [...initialState[key], data],
+    });
+  }
 
   return Object.assign({}, initialState, { [key]: [data] });
 };

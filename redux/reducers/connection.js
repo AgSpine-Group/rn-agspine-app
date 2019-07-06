@@ -9,8 +9,8 @@ const connectionReducer = (state = initialState, action) => {
         isConnected: action.isConnected,
       });
     default:
-      return state
+      return state;
   }
-}
+};
 
 export default connectionReducer;

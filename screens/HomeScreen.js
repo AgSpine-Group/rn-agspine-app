@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { WebBrowser } from 'expo';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Text, Container, Content } from 'native-base';
+import { NavigationActions } from 'react-navigation';
 import QuickNavButton from '../components/QuickNav/QuickNav';
-import { Text, Container, Header, Content } from 'native-base';
-import { StackActions, NavigationActions } from 'react-navigation';
 
 const FRONT_SCREEN_HELPERS = [
   {
@@ -19,45 +14,8 @@ const FRONT_SCREEN_HELPERS = [
     title: 'Calculators',
     location: 'SubmittedForms',
     icon: 'smile-circle',
-  }
+  },
 ];
-
-const pushToPage = (page, navigation) => {
-  return navigation.navigate('FormsStack', {}, NavigationActions.navigate({ routeName: page }));
-}
-
-export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
-
-  render() {
-    const { navigation } = this.props;
-    return (
-      <Container style={styles.container} >
-        <Content contentContainerStyle={{ flexGrow: 1 }}>
-          <ScrollView
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-          >
-            <View style={styles.welcomeContainer}>
-              <Text style={styles.getStartedText}>Home</Text>
-            </View>
-            <Text style={styles.getStartedText}>
-              Welcome to the ChemCert App! Click on forms to see all forms available.
-            </Text>
-            <QuickNavButton
-              navigation={navigation}
-              pushToPage={pushToPage}
-              navHelpers={FRONT_SCREEN_HELPERS}
-            />
-          </ScrollView>
-        </Content>
-      </Container >
-    );
-  }
-}
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
@@ -99,3 +57,38 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 });
+
+const pushToPage = (page, navigation) => {
+  return navigation.navigate('FormsStack', {}, NavigationActions.navigate({ routeName: page }));
+};
+
+class HomeScreen extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+
+  render() {
+    const { navigation } = this.props;
+    return (
+      <Container style={styles.container}>
+        <Content contentContainerStyle={{ flexGrow: 1 }}>
+          <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+            <View style={styles.welcomeContainer}>
+              <Text style={styles.getStartedText}>Home</Text>
+            </View>
+            <Text style={styles.getStartedText}>
+              Welcome to the ChemCert App! Click on forms to see all forms available.
+            </Text>
+            <QuickNavButton
+              navigation={navigation}
+              pushToPage={pushToPage}
+              navHelpers={FRONT_SCREEN_HELPERS}
+            />
+          </ScrollView>
+        </Content>
+      </Container>
+    );
+  }
+}
+
+export default HomeScreen;

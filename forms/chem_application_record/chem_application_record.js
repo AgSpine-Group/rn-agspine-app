@@ -2,29 +2,20 @@ const chemFormData = {
   property: '',
   date: '',
   applicator_name: '',
-  paddock:
-  {
+  paddock: {
     identification: '',
     treatment_area: '',
     growth_stage: '',
     crop_situation: '',
-    comment: ''
+    comment: '',
   },
-  pest_details:
-  {
+  pest_details: {
     pest_type: '',
     growth_stage: '',
     density: '',
-    comments: ''
+    comments: '',
   },
-  chemical_details:
-  {
-    product: '',
-    action_group: '',
-    batch_no: '',
-    rate: '',
-    whp: '',
-    whp_end_date: '',
+  chemical_details: {
     product: '',
     action_group: '',
     batch_no: '',
@@ -32,8 +23,7 @@ const chemFormData = {
     whp: '',
     whp_end_date: '',
   },
-  weather:
-  {
+  weather: {
     start_time: '',
     start_temp: '',
     start_rel_humidity: '',
@@ -45,10 +35,9 @@ const chemFormData = {
     end_rel_humidity: '',
     end_wind_speed: '',
     end_direction: '',
-    end_variability: ''
+    end_variability: '',
   },
-  application_details:
-  {
+  application_details: {
     nozzle_brand: '',
     nozzle_type: '',
     spray_quality: '',
@@ -59,7 +48,7 @@ const chemFormData = {
     quantity_applied: '',
     water_source: '',
   },
-  general_comment: ''
+  general_comment: '',
 };
 
-export { chemFormData };
+export default chemFormData;

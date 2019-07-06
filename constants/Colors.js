@@ -7,7 +7,7 @@ const buttonColors = {
 
   // WHITE
   SECONDARY_BUTTON_COLOR: '#FFF',
-}
+};
 
 const colors = {
   // Heavy orange
