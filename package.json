@@ -6,12 +6,12 @@
     "ios": "expo start --ios",
     "eject": "expo eject",
     "test": "node ./node_modules/jest/bin/jest.js --watchAll",
-    "eslint": "eslint *.js **/*.js",
+    "lint": "eslint *.js **/*.js",
     "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.{js,jsx}": [
-      "eslint --fix",
+      "lint --fix",
       "git add"
     ]
   },
