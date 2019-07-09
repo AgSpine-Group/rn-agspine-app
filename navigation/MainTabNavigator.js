@@ -1,50 +1,104 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import PropTypes from 'prop-types';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { TouchableOpacity, Image } from 'react-native';
+import {
+  createStackNavigator,
+  createBottomTabNavigator,
+  createDrawerNavigator,
+} from 'react-navigation';
 
-import TabBarIcon from '../components/TabBarIcon';
+import Icon from 'react-native-vector-icons/AntDesign';
+import SettingsScreen from '../screens/SettingsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import FormsScreen from '../screens/FormsScreen';
 import FormScreen from '../screens/FormScreen';
 import SubmittedForms from '../screens/SubmittedForms';
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+// - AppSwitchNavigator
+// TODO move the auth section to the login/signup page
+//    - WelcomeScreen
+//      - Login Button
+//      - Sign Up Button
+//    - AppDrawerNavigator
+//          - Home - DashboardStackNavigator(needed for header and to change the header based on the                     tab)
+//            - DashboardTabNavigator
+//              - Tab 1 - Home
+//              - Tab 2 - Forms
+//              - Tab 3 - Locations
+//            - Any files you don't want to be a part of the Tab Navigator can go here.
+//          - Settings - DashboardStackSettings
+
+// BOTTOM NAVIGATOR
+const MainTabNavigator = createBottomTabNavigator(
+  {
+    Home: HomeScreen,
+    Forms: FormsScreen,
+  },
+  {
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state.routes[navigation.state.index];
+      return {
+        headerTitle: routeName,
+      };
+    },
+  }
+);
+
+const HomeStackNavigator = createStackNavigator(
+  {
+    HomeTabNavigator: MainTabNavigator,
+    Form: FormScreen,
+    SubmittedForms,
+  },
+  {
+    defaultNavigationOptions: props => ({
+      headerLeft: <DrawerIcon {...props} />,
+    }),
+  }
+);
+const SettingsStackNavigator = createStackNavigator(
+  {
+    Settings: SettingsScreen,
+  },
+  {
+    defaultNavigationOptions: props => ({
+      headerLeft: <DrawerIcon {...props} />,
+      headerTitle: 'Settings',
+    }),
+  }
+);
+
+// DRAWER COMPONENTS
+const TabNavigationOptions = props => ({
+  title: 'Home',
+  drawerIcon: <Icon name="home" size="25" color="black" {...props} />,
 });
 
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
+const SettingsNavigationOptions = props => ({
+  title: 'Settings',
+  drawerIcon: <Icon name="setting" size="25" color="black" {...props} />,
+});
+
+// DRAWER
+const MainNavigator = createDrawerNavigator({
+  main: {
+    screen: HomeStackNavigator,
+    navigationOptions: TabNavigationOptions,
+  },
+  setting: {
+    screen: SettingsStackNavigator,
+    navigationOptions: SettingsNavigationOptions,
+  },
+});
+
+export const DrawerIcon = props => (
+  // eslint-disable-next-line
+  <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
+    <Image
+      style={{ marginLeft: 15, width: 24, height: 24, backgroundColor: '#add8e6' }}
+      // eslint-disable-next-line
+      source={require('./../assets/images/icon_hamburger.png')}
     />
-  ),
-};
+  </TouchableOpacity>
+);
 
-const FormsStack = createStackNavigator({
-  Forms: FormsScreen,
-  Form: FormScreen,
-  SubmittedForms,
-});
-
-FormsStack.navigationOptions = {
-  tabBarLabel: 'Forms',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
-  ),
-};
-
-FormsStack.propTypes = {
-  focused: PropTypes.bool.isRequired,
-};
-
-export default createBottomTabNavigator({
-  HomeStack,
-  FormsStack,
-});
+export { MainNavigator };

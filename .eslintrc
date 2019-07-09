@@ -21,6 +21,7 @@
   },
   "rules": {
     "import/no-unresolved": "off",
+    "react/prop-types": ["error", { "ignore": ["navigation", "pushToPage"] }],
     "import/no-extraneous-dependencies": ["error", { "packageDir": "./" }],
     "react/destructuring-assignment": "off",
     "react/jsx-filename-extension": [

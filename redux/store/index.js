@@ -29,6 +29,7 @@ const persistedReducer = persistReducer(persistConfig, offlineEnhanceReducer(roo
 
 const middleware = compose(
   applyMiddleware(thunk, promise, logger, offlineMiddleware),
+  // eslint-disable-next-line
   window.devToolsExtension ? window.devToolsExtension() : f => f,
   offlineEnhanceStore
 );

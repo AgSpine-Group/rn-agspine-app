@@ -6,6 +6,11 @@ import QuickNavButton from '../components/QuickNav/QuickNav';
 
 const FRONT_SCREEN_HELPERS = [
   {
+    title: 'Manage locations',
+    location: 'SubmittedForms',
+    icon: 'farm',
+  },
+  {
     title: 'Submitted forms',
     location: 'SubmittedForms',
     icon: 'smile-circle',
@@ -56,39 +61,37 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2e78b7',
   },
+  navContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+  },
 });
 
 const pushToPage = (page, navigation) => {
   return navigation.navigate('FormsStack', {}, NavigationActions.navigate({ routeName: page }));
 };
 
-class HomeScreen extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
-
-  render() {
-    const { navigation } = this.props;
-    return (
-      <Container style={styles.container}>
-        <Content contentContainerStyle={{ flexGrow: 1 }}>
-          <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-            <View style={styles.welcomeContainer}>
-              <Text style={styles.getStartedText}>Home</Text>
-            </View>
-            <Text style={styles.getStartedText}>
-              Welcome to the ChemCert App! Click on forms to see all forms available.
-            </Text>
+const HomeScreen = props => {
+  const { navigation } = props;
+  return (
+    <Container style={styles.container}>
+      <Content contentContainerStyle={{ flexGrow: 1 }}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+          <Text style={styles.getStartedText}>
+            Welcome to the ChemCert App! Click on forms to see all forms available.
+          </Text>
+          <View style={styles.navContainer}>
             <QuickNavButton
               navigation={navigation}
               pushToPage={pushToPage}
               navHelpers={FRONT_SCREEN_HELPERS}
             />
-          </ScrollView>
-        </Content>
-      </Container>
-    );
-  }
-}
+          </View>
+        </ScrollView>
+      </Content>
+    </Container>
+  );
+};
 
 export default HomeScreen;
