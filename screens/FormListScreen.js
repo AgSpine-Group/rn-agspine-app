@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { ScrollView, StyleSheet, Button, FlatList, View } from 'react-native';
 import { Text } from 'native-base';
 import { StackActions } from 'react-navigation';
@@ -38,10 +39,8 @@ const styles = StyleSheet.create({
 const FormListComponent = props => {
   return (
     <View style={styles.formListContainer}>
-      {/* eslint-disable-next-line */}
       <Text style={styles.title}>{props.title}</Text>
       <FlatList
-        /* eslint-disable-next-line */
         data={props.forms}
         renderItem={({ item }) => (
           <Button
@@ -55,6 +54,11 @@ const FormListComponent = props => {
       />
     </View>
   );
+};
+
+FormListComponent.propTypes = {
+  title: PropTypes.string.isRequired,
+  forms: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 class FormsScreen extends React.Component {

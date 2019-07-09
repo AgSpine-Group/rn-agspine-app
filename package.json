@@ -28,6 +28,7 @@
     "@redux-offline/redux-offline": "^2.5.1",
     "axios": "^0.18.0",
     "expo": "^33.0.0",
+    "expo-font": "^5.0.1",
     "fb-watchman": "^2.0.0",
     "fetch-mock": "^7.3.0",
     "firebase": "^6.1.1",

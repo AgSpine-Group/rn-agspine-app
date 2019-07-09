@@ -95,11 +95,9 @@ const MainNavigator = createDrawerNavigator({
 });
 
 export const DrawerIcon = props => (
-  // eslint-disable-next-line
   <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
     <Image
       style={{ marginLeft: 15, width: 24, height: 24, backgroundColor: '#add8e6' }}
-      // eslint-disable-next-line
       source={require('./../assets/images/icon_hamburger.png')}
     />
   </TouchableOpacity>
