@@ -9,7 +9,9 @@ import {
 import Icon from 'react-native-vector-icons/AntDesign';
 import SettingsScreen from '../screens/SettingsScreen';
 import HomeScreen from '../screens/HomeScreen';
-import FormsScreen from '../screens/FormsScreen';
+import FormsScreen from '../screens/FormListScreen';
+import CalculatorListScreen from '../screens/CalculatorListScreen';
+import LocationListScreen from '../screens/LocationListScreen';
 import FormScreen from '../screens/FormScreen';
 import SubmittedForms from '../screens/SubmittedForms';
 
@@ -30,7 +32,9 @@ import SubmittedForms from '../screens/SubmittedForms';
 // BOTTOM NAVIGATOR
 const MainTabNavigator = createBottomTabNavigator(
   {
-    Home: HomeScreen,
+    Dashboard: HomeScreen,
+    Locations: LocationListScreen,
+    Calculators: CalculatorListScreen,
     Forms: FormsScreen,
   },
   {

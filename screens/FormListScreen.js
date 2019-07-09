@@ -38,8 +38,10 @@ const styles = StyleSheet.create({
 const FormListComponent = props => {
   return (
     <View style={styles.formListContainer}>
+      {/* eslint-disable-next-line */}
       <Text style={styles.title}>{props.title}</Text>
       <FlatList
+        /* eslint-disable-next-line */
         data={props.forms}
         renderItem={({ item }) => (
           <Button
@@ -48,9 +50,7 @@ const FormListComponent = props => {
             }}
             style={styles.item}
             title={item.title}
-          >
-            {console.log(item.description)}
-          </Button>
+          />
         )}
       />
     </View>
@@ -67,12 +67,12 @@ class FormsScreen extends React.Component {
 
     return (
       <ScrollView style={styles.container}>
-        {forms.map((x, i) => (
+        {forms.map(x => (
           <FormListComponent
             navigation={navigation}
             title={x.title}
             forms={x.forms}
-            key={x.title + i}
+            key={x.title}
           />
         ))}
       </ScrollView>
