@@ -8,11 +8,10 @@ const styles = StyleSheet.create({
   navContainer: {
     display: 'flex',
     height: 150,
-    margin: 10,
-    flexDirection: 'row',
+    margin: '2.5%',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#d3d3d3',
+    backgroundColor: '#add8e6',
   },
 });
 
@@ -20,7 +19,7 @@ const QuickNavButton = props => {
   const { navigation, pushToPage, navHelpers } = props;
 
   return (
-    <Card style={{ display: 'flex', flexGrow: 1 }} bordered={false}>
+    <Card style={{ display: 'flex' }} bordered={false}>
       {navHelpers.map(navItem => (
         <CardItem
           onPress={() => pushToPage(navItem.location, navigation)}

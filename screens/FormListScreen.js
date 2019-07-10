@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { ScrollView, StyleSheet, Button, FlatList, View } from 'react-native';
 import { Text } from 'native-base';
 import { StackActions } from 'react-navigation';
@@ -48,13 +49,16 @@ const FormListComponent = props => {
             }}
             style={styles.item}
             title={item.title}
-          >
-            {console.log(item.description)}
-          </Button>
+          />
         )}
       />
     </View>
   );
+};
+
+FormListComponent.propTypes = {
+  title: PropTypes.string.isRequired,
+  forms: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 class FormsScreen extends React.Component {
@@ -67,12 +71,12 @@ class FormsScreen extends React.Component {
 
     return (
       <ScrollView style={styles.container}>
-        {forms.map((x, i) => (
+        {forms.map(x => (
           <FormListComponent
             navigation={navigation}
             title={x.title}
             forms={x.forms}
-            key={x.title + i}
+            key={x.title}
           />
         ))}
       </ScrollView>

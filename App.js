@@ -1,9 +1,9 @@
-import * as firebase from 'firebase';
 import * as React from 'react';
+import firebase from 'firebase';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading } from 'expo';
-import * as Icon from '@expo/vector-icons';
-import * as Font from 'expo-font';
+import Icon from '@expo/vector-icons';
+import Font from 'expo-font';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import PropTypes from 'prop-types';
@@ -29,7 +29,6 @@ export const AuthenticationWrapper = ({ authed }) => {
 };
 
 AuthenticationWrapper.propTypes = {
-  // eslint-disable-next-line
   authed: PropTypes.bool.isRequired,
 };
 
@@ -56,15 +55,12 @@ export default class App extends React.Component {
       Font.loadAsync({
         ...Icon.Ionicons.font,
 
-        'space-mono':
-          // eslint-disable-next-line global-require
-          require('./assets/fonts/SpaceMono-Regular.ttf'),
+        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
       }),
     ]);
   };
 
-  // eslint-disable-next-line
-  handleLoadingError = error => console.log(error);
+  handleLoadingError = error => error;
 
   handleFinishLoading = () => {
     return this.setState({ isLoadingComplete: true });
