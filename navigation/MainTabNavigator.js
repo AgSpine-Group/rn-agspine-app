@@ -29,36 +29,88 @@ import SubmittedForms from '../screens/SubmittedForms';
 //            - Any files you don't want to be a part of the Tab Navigator can go here.
 //          - Settings - DashboardStackSettings
 
+const HomeStack = createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state;
+      return {
+        headerTitle: routeName,
+        headerLeft: <DrawerIcon navigation={navigation} />,
+      };
+    },
+  },
+
+  // ....Add more screens for each stack here
+});
+
+const FormStack = createStackNavigator({
+  Home: {
+    screen: FormsScreen,
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state;
+      return {
+        headerTitle: routeName,
+        headerLeft: <DrawerIcon navigation={navigation} />,
+      };
+    },
+  },
+  FormScreen: {
+    screen: FormScreen,
+  },
+  // ....Add more screens for each stack here
+});
+const LocationStack = createStackNavigator({
+  Home: {
+    screen: LocationListScreen,
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state;
+      return {
+        headerTitle: routeName,
+        headerLeft: <DrawerIcon navigation={navigation} />,
+      };
+    },
+  },
+  // ....Add more screens for each stack here
+});
+
+const CalculatorStack = createStackNavigator({
+  Home: {
+    screen: CalculatorListScreen,
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state;
+      return {
+        headerTitle: routeName,
+        headerLeft: <DrawerIcon navigation={navigation} />,
+      };
+    },
+  },
+  // ....Add more screens for each stack here
+});
+
 // BOTTOM NAVIGATOR
 const MainTabNavigator = createBottomTabNavigator(
   {
-    Dashboard: HomeScreen,
-    Locations: LocationListScreen,
-    Calculators: CalculatorListScreen,
-    Forms: FormsScreen,
+    Dashboard: HomeStack,
+    Locations: LocationStack,
+    Calculators: CalculatorStack,
+    Forms: FormStack,
   },
   {
-    navigationOptions: ({ navigation }) => {
-      const { routeName } = navigation.state.routes[navigation.state.index];
+    navigationOptions: () => {
       return {
-        headerTitle: routeName,
+        header: null,
       };
     },
   }
 );
 
-const HomeStackNavigator = createStackNavigator(
-  {
-    HomeTabNavigator: MainTabNavigator,
-    Form: FormScreen,
-    SubmittedForms,
-  },
-  {
-    defaultNavigationOptions: props => ({
-      headerLeft: <DrawerIcon {...props} />,
-    }),
-  }
-);
+const HomeStackNavigator = createStackNavigator({
+  HomeTabNavigator: MainTabNavigator,
+  Form: FormScreen,
+  SubmittedForms,
+});
+
 const SettingsStackNavigator = createStackNavigator(
   {
     Settings: SettingsScreen,
