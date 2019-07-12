@@ -1,9 +1,0 @@
-## IGNORE
-node_modules/**
-views/
-public/
-coverage/
-migrations/
-public/
-build/
-
