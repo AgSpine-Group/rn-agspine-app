@@ -1,4 +1,5 @@
 import React from 'react';
+<<<<<<< HEAD
 import { TouchableOpacity, Image } from 'react-native';
 import {
   createStackNavigator,
@@ -8,6 +9,13 @@ import {
 
 import Icon from 'react-native-vector-icons/AntDesign';
 import SettingsScreen from '../screens/SettingsScreen';
+=======
+import { Platform } from 'react-native';
+import PropTypes from 'prop-types';
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+
+import { MaterialCommunityIcons, TabBarIcon, MaterialIcons } from '../components/TabBarIcon';
+>>>>>>> commit
 import HomeScreen from '../screens/HomeScreen';
 import FormsScreen from '../screens/FormListScreen';
 import CalculatorListScreen from '../screens/CalculatorListScreen';
@@ -82,6 +90,7 @@ const SettingsNavigationOptions = props => ({
   drawerIcon: <Icon name="setting" size="25" color="black" {...props} />,
 });
 
+<<<<<<< HEAD
 // DRAWER
 const MainNavigator = createDrawerNavigator({
   main: {
@@ -99,8 +108,77 @@ export const DrawerIcon = props => (
     <Image
       style={{ marginLeft: 15, width: 24, height: 24, backgroundColor: '#add8e6' }}
       source={require('./../assets/images/icon_hamburger.png')}
+=======
+const DashboardStack = createStackNavigator({
+  Home: HomeScreen,
+});
+
+DashboardStack.navigationOptions = {
+  tabBarLabel: 'Dashboard',
+  tabBarIcon: ({ focused }) => <MaterialIcons focused={focused} name="dashboard" label="Dashboard" />,
+};
+
+const PaddockStack = createStackNavigator({
+  Home: HomeScreen,
+});
+
+PaddockStack.navigationOptions = {
+  tabBarLabel: 'Paddocks',
+  tabBarIcon: ({ focused }) => <MaterialCommunityIcons focused={focused} name="leaf" label="Paddocks" />,
+};
+
+const CalculatorStack = createStackNavigator({
+  Home: HomeScreen,
+});
+
+CalculatorStack.navigationOptions = {
+  tabBarLabel: 'Calculators',
+  tabBarIcon: ({ focused }) => (
+    <MaterialCommunityIcons
+      focused={focused}
+      name="calculator-variant"
+      label="Calculators"
+>>>>>>> commit
     />
   </TouchableOpacity>
 );
 
+<<<<<<< HEAD
 export { MainNavigator };
+=======
+const FormsStack = createStackNavigator({
+  Forms: FormsScreen,
+  Form: FormScreen,
+  SubmittedForms,
+});
+
+FormsStack.navigationOptions = {
+  tabBarLabel: 'Forms',
+  tabBarIcon: ({ focused }) => <MaterialCommunityIcons focused={focused} name="clipboard-text" label="Forms" />,
+};
+
+const BottomTabNavigatorConfig = {
+  tabBarOptions: {
+    showLabel: false,
+    activeTintColor: '#289124', // 500
+    inactiveTintColor: '#A5E0A2', // 200
+    style: {
+      backgroundColor: '#34AD2F', // 400
+    },
+  },
+};
+
+FormsStack.propTypes = {
+  focused: PropTypes.bool.isRequired,
+};
+
+export default createBottomTabNavigator(
+  {
+    DashboardStack,
+    PaddockStack,
+    CalculatorStack,
+    FormsStack,
+  },
+  BottomTabNavigatorConfig
+);
+>>>>>>> commit
