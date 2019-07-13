@@ -87,4 +87,14 @@ TabBarIcon.propTypes = {
   name: PropTypes.string.isRequired,
   focused: PropTypes.bool.isRequired,
 };
+
+MaterialIcons.propTypes = {
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+};
+
+MaterialCommunityIcons.propTypes = {
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+};
 export default TabBarIcon;
