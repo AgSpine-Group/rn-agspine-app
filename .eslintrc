@@ -21,7 +21,10 @@
   },
   "rules": {
     "import/no-unresolved": "off",
-    "react/prop-types": ["error", { "ignore": ["navigation", "pushToPage"] }],
+    "react/prop-types": [
+      "error",
+      { "ignore": ["navigation", "pushToPage", "focused"] }
+    ],
     "import/no-extraneous-dependencies": ["error", { "packageDir": "./" }],
     "react/destructuring-assignment": "off",
     "global-require": "off",

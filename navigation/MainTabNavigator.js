@@ -5,8 +5,10 @@ import {
   createBottomTabNavigator,
   createDrawerNavigator,
 } from 'react-navigation';
-
 import Icon from 'react-native-vector-icons/AntDesign';
+import { MaterialCommunityIcons, MaterialIcons } from '../components/TabBarIcon';
+import { PRIMARY } from '../constants/Colors';
+
 import SettingsScreen from '../screens/SettingsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import FormsScreen from '../screens/FormListScreen';
@@ -29,36 +31,131 @@ import SubmittedForms from '../screens/SubmittedForms';
 //            - Any files you don't want to be a part of the Tab Navigator can go here.
 //          - Settings - DashboardStackSettings
 
+const BottomTabNavigatorConfig = {
+  navigationOptions: () => {
+    return {
+      header: null,
+    };
+  },
+  tabBarOptions: {
+    showLabel: false,
+    activeTintColor: PRIMARY[500],
+    inactiveTintColor: PRIMARY[200],
+    style: {
+      backgroundColor: PRIMARY[400],
+    },
+  },
+};
+
+const HomeStack = createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state;
+      return {
+        headerTitle: routeName,
+        headerLeft: <DrawerIcon navigation={navigation} />,
+      };
+    },
+  },
+
+  // ....Add more screens for each stack here
+});
+
+const FormStack = createStackNavigator({
+  Forms: {
+    screen: FormsScreen,
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state;
+      return {
+        headerTitle: routeName,
+        headerLeft: <DrawerIcon navigation={navigation} />,
+      };
+    },
+  },
+  FormScreen: {
+    screen: FormScreen,
+  },
+  SubmittedForms: {
+    screen: SubmittedForms,
+  },
+  // ....Add more screens for each stack here
+});
+const LocationStack = createStackNavigator({
+  Locations: {
+    screen: LocationListScreen,
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state;
+      return {
+        headerTitle: routeName,
+        headerLeft: <DrawerIcon navigation={navigation} />,
+      };
+    },
+  },
+  // ....Add more screens for each stack here
+});
+
+const CalculatorStack = createStackNavigator({
+  Calculators: {
+    screen: CalculatorListScreen,
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state;
+      return {
+        headerTitle: routeName,
+        headerLeft: <DrawerIcon navigation={navigation} />,
+      };
+    },
+  },
+  // ....Add more screens for each stack here
+});
+
 // BOTTOM NAVIGATOR
 const MainTabNavigator = createBottomTabNavigator(
   {
-    Dashboard: HomeScreen,
-    Locations: LocationListScreen,
-    Calculators: CalculatorListScreen,
-    Forms: FormsScreen,
-  },
-  {
-    navigationOptions: ({ navigation }) => {
-      const { routeName } = navigation.state.routes[navigation.state.index];
-      return {
-        headerTitle: routeName,
-      };
+    Dashboard: {
+      screen: HomeStack,
+      navigationOptions: {
+        tabBarLabel: 'Dashboard',
+        tabBarIcon: ({ focused }) => (
+          <MaterialIcons focused={focused} name="dashboard" label="Dashboard" />
+        ),
+      },
     },
-  }
+    Locations: {
+      screen: LocationStack,
+      navigationOptions: {
+        tabBarLabel: 'Locations',
+        tabBarIcon: ({ focused }) => (
+          <MaterialCommunityIcons focused={focused} name="leaf" label="Locations" />
+        ),
+      },
+    },
+    Calculators: {
+      screen: CalculatorStack,
+      navigationOptions: {
+        tabBarLabel: 'Calculators',
+        tabBarIcon: ({ focused }) => (
+          <MaterialCommunityIcons focused={focused} name="calculator-variant" label="Calculators" />
+        ),
+      },
+    },
+    Forms: {
+      screen: FormStack,
+      navigationOptions: {
+        tabBarLabel: 'Forms',
+        tabBarIcon: ({ focused }) => (
+          <MaterialCommunityIcons focused={focused} name="clipboard-text" label="Forms" />
+        ),
+      },
+    },
+  },
+  BottomTabNavigatorConfig
 );
 
-const HomeStackNavigator = createStackNavigator(
-  {
-    HomeTabNavigator: MainTabNavigator,
-    Form: FormScreen,
-    SubmittedForms,
-  },
-  {
-    defaultNavigationOptions: props => ({
-      headerLeft: <DrawerIcon {...props} />,
-    }),
-  }
-);
+const HomeStackNavigator = createStackNavigator({
+  HomeTabNavigator: MainTabNavigator,
+});
+
 const SettingsStackNavigator = createStackNavigator(
   {
     Settings: SettingsScreen,
@@ -74,12 +171,12 @@ const SettingsStackNavigator = createStackNavigator(
 // DRAWER COMPONENTS
 const TabNavigationOptions = props => ({
   title: 'Home',
-  drawerIcon: <Icon name="home" size="25" color="black" {...props} />,
+  drawerIcon: <Icon name="home" size={25} color="black" {...props} />,
 });
 
 const SettingsNavigationOptions = props => ({
   title: 'Settings',
-  drawerIcon: <Icon name="setting" size="25" color="black" {...props} />,
+  drawerIcon: <Icon name="setting" size={25} color="black" {...props} />,
 });
 
 // DRAWER

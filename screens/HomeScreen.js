@@ -7,8 +7,8 @@ import QuickNavButton from '../components/QuickNav/QuickNav';
 const FRONT_SCREEN_HELPERS = [
   {
     title: 'Manage locations',
-    location: 'SubmittedForms',
-    icon: 'farm',
+    location: 'LocationStack',
+    icon: 'smile-circle',
   },
   {
     title: 'Submitted forms',
@@ -17,7 +17,7 @@ const FRONT_SCREEN_HELPERS = [
   },
   {
     title: 'Calculators',
-    location: 'SubmittedForms',
+    location: 'CalculatorStack',
     icon: 'smile-circle',
   },
 ];

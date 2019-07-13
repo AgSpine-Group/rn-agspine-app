@@ -21,9 +21,7 @@ class FormScreen extends React.Component {
   constructor(props) {
     super(props);
     this.formId = this.props.navigation.getParam('formId', null);
-    console.log(this.formId);
     this.form = forms.map(formTypes => formTypes.forms.find(x => x.id === this.formId));
-    console.log(this.form);
     this.state = {
       formData: this.form[0].initialState,
     };

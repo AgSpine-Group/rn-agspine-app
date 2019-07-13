@@ -42,10 +42,13 @@ const QuickNavButton = props => {
 };
 
 QuickNavButton.propTypes = {
-  navHelpers: PropTypes.arrayOf({
-    title: PropTypes.string.isRequired,
-    icon: PropTypes.string.isRequired,
-  }).isRequired,
+  navHelpers: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      icon: PropTypes.string.isRequired,
+      location: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default QuickNavButton;
