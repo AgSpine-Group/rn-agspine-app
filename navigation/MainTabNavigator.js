@@ -17,6 +17,8 @@ import LocationListScreen from '../screens/LocationListScreen';
 import FormScreen from '../screens/FormScreen';
 import SubmittedForms from '../screens/SubmittedForms';
 
+import { PRIMARY } from '../constants/Colors';
+
 // - AppSwitchNavigator
 // TODO move the auth section to the login/signup page
 //    - WelcomeScreen
@@ -40,10 +42,10 @@ const BottomTabNavigatorConfig = {
   },
   tabBarOptions: {
     showLabel: false,
-    activeTintColor: '#289124', // 500
-    inactiveTintColor: '#A5E0A2', // 200
+    activeTintColor: PRIMARY[500],
+    inactiveTintColor: PRIMARY[200],
     style: {
-      backgroundColor: '#34AD2F', // 400
+      backgroundColor: PRIMARY[400],
     },
   },
 };

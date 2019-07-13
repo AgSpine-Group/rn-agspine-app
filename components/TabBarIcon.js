@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import * as Icon from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 
-import Colors from '../constants/Colors';
+import { PRIMARY } from '../constants/Colors';
 
 const styles = StyleSheet.create({
   activeIconContainer: {
@@ -48,7 +48,7 @@ export const MaterialCommunityIcons = props => (
     <Icon.MaterialCommunityIcons
       name={props.name}
       size={26}
-      color={props.focused ? '#289124' : '#A5E0A2'}
+      color={props.focused ? PRIMARY[500] : PRIMARY[200]}
     />
     {props.label && (
       <Text
@@ -66,7 +66,11 @@ export const MaterialCommunityIcons = props => (
 
 export const MaterialIcons = props => (
   <View style={props.focused ? styles.activeIconContainer : styles.nonActiveIconContainer}>
-    <Icon.MaterialIcons name={props.name} size={26} color={props.focused ? '#289124' : '#A5E0A2'} />
+    <Icon.MaterialIcons
+      name={props.name}
+      size={26}
+      color={props.focused ? PRIMARY[500] : PRIMARY[200]}
+    />
     {props.label && (
       <Text
         style={
@@ -79,15 +83,6 @@ export const MaterialIcons = props => (
       </Text>
     )}
   </View>
-);
-
-export const AntDesign = props => (
-  <Icon.AntDesign
-    name={props.name}
-    size={26}
-    style={{ marginBottom: -3 }}
-    color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
-  />
 );
 
 TabBarIcon.propTypes = {
