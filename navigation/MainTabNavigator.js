@@ -7,7 +7,6 @@ import {
 } from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/AntDesign';
-import PropTypes from 'prop-types';
 import SettingsScreen from '../screens/SettingsScreen';
 
 import { MaterialCommunityIcons, MaterialIcons } from '../components/TabBarIcon';
@@ -32,22 +31,64 @@ import SubmittedForms from '../screens/SubmittedForms';
 //            - Any files you don't want to be a part of the Tab Navigator can go here.
 //          - Settings - DashboardStackSettings
 
+const BottomTabNavigatorConfig = {
+  navigationOptions: ({ navigation }) => {
+    const { routeName } = navigation.state.routes[navigation.state.index];
+    return {
+      headerTitle: routeName,
+    };
+  },
+  tabBarOptions: {
+    showLabel: false,
+    activeTintColor: '#289124', // 500
+    inactiveTintColor: '#A5E0A2', // 200
+    style: {
+      backgroundColor: '#34AD2F', // 400
+    },
+  },
+};
+
 // BOTTOM NAVIGATOR
 const MainTabNavigator = createBottomTabNavigator(
   {
-    Dashboard: HomeScreen,
-    Locations: LocationListScreen,
-    Calculators: CalculatorListScreen,
-    Forms: FormsScreen,
-  },
-  {
-    navigationOptions: ({ navigation }) => {
-      const { routeName } = navigation.state.routes[navigation.state.index];
-      return {
-        headerTitle: routeName,
-      };
+    Dashboard: {
+      screen: HomeScreen,
+      navigationOptions: {
+        tabBarLabel: 'Dashboard',
+        tabBarIcon: ({ focused }) => (
+          <MaterialIcons focused={focused} name="dashboard" label="Dashboard" />
+        ),
+      },
     },
-  }
+    Locations: {
+      screen: LocationListScreen,
+      navigationOptions: {
+        tabBarLabel: 'Locations',
+        tabBarIcon: ({ focused }) => (
+          <MaterialCommunityIcons focused={focused} name="leaf" label="Locations" />
+        ),
+      },
+    },
+    Calculators: {
+      screen: CalculatorListScreen,
+      navigationOptions: {
+        tabBarLabel: 'Calculators',
+        tabBarIcon: ({ focused }) => (
+          <MaterialCommunityIcons focused={focused} name="calculator-variant" label="Calculators" />
+        ),
+      },
+    },
+    Forms: {
+      screen: FormsScreen,
+      navigationOptions: {
+        tabBarLabel: 'Forms',
+        tabBarIcon: ({ focused }) => (
+          <MaterialCommunityIcons focused={focused} name="clipboard-text" label="Forms" />
+        ),
+      },
+    },
+  },
+  BottomTabNavigatorConfig
 );
 
 const HomeStackNavigator = createStackNavigator(
@@ -106,74 +147,4 @@ export const DrawerIcon = props => (
   </TouchableOpacity>
 );
 
-const DashboardStack = createStackNavigator({
-  Home: HomeScreen,
-});
-
-DashboardStack.navigationOptions = {
-  tabBarLabel: 'Dashboard',
-  tabBarIcon: ({ focused }) => (
-    <MaterialIcons focused={focused} name="dashboard" label="Dashboard" />
-  ),
-};
-
-const PaddockStack = createStackNavigator({
-  Home: HomeScreen,
-});
-
-PaddockStack.navigationOptions = {
-  tabBarLabel: 'Paddocks',
-  tabBarIcon: ({ focused }) => (
-    <MaterialCommunityIcons focused={focused} name="leaf" label="Paddocks" />
-  ),
-};
-
-const CalculatorStack = createStackNavigator({
-  Home: HomeScreen,
-});
-
-const FormsStack = createStackNavigator({
-  Forms: FormsScreen,
-  Form: FormScreen,
-  SubmittedForms,
-});
-
-FormsStack.navigationOptions = {
-  tabBarLabel: 'Forms',
-  tabBarIcon: ({ focused }) => (
-    <MaterialCommunityIcons focused={focused} name="clipboard-text" label="Forms" />
-  ),
-};
-
-const BottomTabNavigatorConfig = {
-  tabBarOptions: {
-    showLabel: false,
-    activeTintColor: '#289124', // 500
-    inactiveTintColor: '#A5E0A2', // 200
-    style: {
-      backgroundColor: '#34AD2F', // 400
-    },
-  },
-};
-
-FormsStack.propTypes = {
-  focused: PropTypes.bool.isRequired,
-};
-
-CalculatorStack.navigationOptions = {
-  tabBarLabel: 'Calculators',
-  tabBarIcon: ({ focused }) => (
-    <MaterialCommunityIcons focused={focused} name="calculator-variant" label="Calculators" />
-  ),
-};
-
-export default createBottomTabNavigator(
-  {
-    DashboardStack,
-    PaddockStack,
-    CalculatorStack,
-    FormsStack,
-  },
-  BottomTabNavigatorConfig
-);
 export { MainNavigator };
