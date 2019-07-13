@@ -1,6 +1,9 @@
-// Maintain mostly white background
-// Drop in contrasting elements using primary_color and secondary_color as key key backdrops
-// Secondary text and Primary Text will only be used on coloured backgrounds.
+const PRIMARY = {
+  200: '#A5E0A2',
+  400: '#34AD2F',
+  500: '#289124',
+};
+
 const buttonColors = {
   // Green
   PRIMARY_BUTTON_COLOR: '#64B3AB',
@@ -21,4 +24,9 @@ const colors = {
   // White
   SECONDARY_TEXT_COLOR: '#FFF',
 };
-export default { ...colors, ...buttonColors };
+
+export { PRIMARY };
+export default {
+  ...colors,
+  ...buttonColors,
+};

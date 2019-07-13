@@ -9,7 +9,7 @@ import forms from '../forms';
 
 const pushToForm = item =>
   StackActions.push({
-    routeName: 'Form',
+    routeName: 'FormScreen',
     params: {
       formId: item.id,
     },

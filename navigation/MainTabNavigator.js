@@ -5,8 +5,10 @@ import {
   createBottomTabNavigator,
   createDrawerNavigator,
 } from 'react-navigation';
-
 import Icon from 'react-native-vector-icons/AntDesign';
+import { MaterialCommunityIcons, MaterialIcons } from '../components/TabBarIcon';
+import { PRIMARY } from '../constants/Colors';
+
 import SettingsScreen from '../screens/SettingsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import FormsScreen from '../screens/FormListScreen';
@@ -29,6 +31,22 @@ import SubmittedForms from '../screens/SubmittedForms';
 //            - Any files you don't want to be a part of the Tab Navigator can go here.
 //          - Settings - DashboardStackSettings
 
+const BottomTabNavigatorConfig = {
+  navigationOptions: () => {
+    return {
+      header: null,
+    };
+  },
+  tabBarOptions: {
+    showLabel: false,
+    activeTintColor: PRIMARY[500],
+    inactiveTintColor: PRIMARY[200],
+    style: {
+      backgroundColor: PRIMARY[400],
+    },
+  },
+};
+
 const HomeStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
@@ -45,7 +63,7 @@ const HomeStack = createStackNavigator({
 });
 
 const FormStack = createStackNavigator({
-  Home: {
+  Forms: {
     screen: FormsScreen,
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state;
@@ -58,10 +76,13 @@ const FormStack = createStackNavigator({
   FormScreen: {
     screen: FormScreen,
   },
+  SubmittedForms: {
+    screen: SubmittedForms,
+  },
   // ....Add more screens for each stack here
 });
 const LocationStack = createStackNavigator({
-  Home: {
+  Locations: {
     screen: LocationListScreen,
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state;
@@ -75,7 +96,7 @@ const LocationStack = createStackNavigator({
 });
 
 const CalculatorStack = createStackNavigator({
-  Home: {
+  Calculators: {
     screen: CalculatorListScreen,
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state;
@@ -91,24 +112,48 @@ const CalculatorStack = createStackNavigator({
 // BOTTOM NAVIGATOR
 const MainTabNavigator = createBottomTabNavigator(
   {
-    Dashboard: HomeStack,
-    Locations: LocationStack,
-    Calculators: CalculatorStack,
-    Forms: FormStack,
-  },
-  {
-    navigationOptions: () => {
-      return {
-        header: null,
-      };
+    Dashboard: {
+      screen: HomeStack,
+      navigationOptions: {
+        tabBarLabel: 'Dashboard',
+        tabBarIcon: ({ focused }) => (
+          <MaterialIcons focused={focused} name="dashboard" label="Dashboard" />
+        ),
+      },
     },
-  }
+    Locations: {
+      screen: LocationStack,
+      navigationOptions: {
+        tabBarLabel: 'Locations',
+        tabBarIcon: ({ focused }) => (
+          <MaterialCommunityIcons focused={focused} name="leaf" label="Locations" />
+        ),
+      },
+    },
+    Calculators: {
+      screen: CalculatorStack,
+      navigationOptions: {
+        tabBarLabel: 'Calculators',
+        tabBarIcon: ({ focused }) => (
+          <MaterialCommunityIcons focused={focused} name="calculator-variant" label="Calculators" />
+        ),
+      },
+    },
+    Forms: {
+      screen: FormStack,
+      navigationOptions: {
+        tabBarLabel: 'Forms',
+        tabBarIcon: ({ focused }) => (
+          <MaterialCommunityIcons focused={focused} name="clipboard-text" label="Forms" />
+        ),
+      },
+    },
+  },
+  BottomTabNavigatorConfig
 );
 
 const HomeStackNavigator = createStackNavigator({
   HomeTabNavigator: MainTabNavigator,
-  Form: FormScreen,
-  SubmittedForms,
 });
 
 const SettingsStackNavigator = createStackNavigator(
@@ -126,12 +171,12 @@ const SettingsStackNavigator = createStackNavigator(
 // DRAWER COMPONENTS
 const TabNavigationOptions = props => ({
   title: 'Home',
-  drawerIcon: <Icon name="home" size="25" color="black" {...props} />,
+  drawerIcon: <Icon name="home" size={25} color="black" {...props} />,
 });
 
 const SettingsNavigationOptions = props => ({
   title: 'Settings',
-  drawerIcon: <Icon name="setting" size="25" color="black" {...props} />,
+  drawerIcon: <Icon name="setting" size={25} color="black" {...props} />,
 });
 
 // DRAWER
