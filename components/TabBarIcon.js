@@ -3,12 +3,12 @@ import { StyleSheet, View, Text } from 'react-native';
 import * as Icon from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 
-import { PRIMARY } from '../constants/Colors';
+import Colors, { PRIMARY } from '../constants/Colors';
 
 const styles = StyleSheet.create({
   activeIconContainer: {
     padding: 10,
-    backgroundColor: '#A5E0A2',
+    backgroundColor: PRIMARY[200],
     borderRadius: 4,
     position: 'absolute',
     display: 'flex',
@@ -27,10 +27,10 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   activeLabel: {
-    color: '#289124',
+    color: PRIMARY[500],
   },
   notActiveLabel: {
-    color: '#A5E0A2',
+    color: PRIMARY[200],
   },
 });
 
