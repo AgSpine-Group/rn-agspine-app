@@ -1,37 +1,7 @@
 import React from 'react';
 import * as Icon from '@expo/vector-icons';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, Text } from 'react-native';
 import Colors, { PRIMARY } from '../constants/Colors';
-
-const styles = StyleSheet.create({
-  activeIconContainer: {
-    padding: 10,
-    backgroundColor: PRIMARY[200],
-    borderRadius: 4,
-    position: 'absolute',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 80,
-    height: 80,
-  },
-  nonActiveIconContainer: {
-    display: 'flex',
-    marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  label: {
-    fontSize: 10,
-  },
-  activeLabel: {
-    color: PRIMARY[500],
-  },
-  notActiveLabel: {
-    color: PRIMARY[200],
-  },
-});
 
 export const TabBarIcon = props => (
   <Icon.Ionicons
@@ -43,58 +13,31 @@ export const TabBarIcon = props => (
 );
 
 export const MaterialCommunityIcons = props => (
-  <View style={props.focused ? styles.activeIconContainer : styles.nonActiveIconContainer}>
-    <Icon.MaterialCommunityIcons
-      name={props.name}
-      size={26}
-      color={props.focused ? PRIMARY[500] : PRIMARY[200]}
-    />
-    {props.label && (
-      <Text
-        style={
-          props.focused
-            ? Object.assign({}, styles.label, styles.activeLabel)
-            : Object.assign({}, styles.label, styles.notActiveLabel)
-        }
-      >
-        {props.label}
-      </Text>
-    )}
-  </View>
+  <Icon.MaterialCommunityIcons
+    name={props.name}
+    size={26}
+    color={props.focused ? PRIMARY[100] : PRIMARY[200]}
+  />
 );
 
 export const MaterialIcons = props => (
-  <View style={props.focused ? styles.activeIconContainer : styles.nonActiveIconContainer}>
-    <Icon.MaterialIcons
-      name={props.name}
-      size={26}
-      color={props.focused ? PRIMARY[500] : PRIMARY[200]}
-    />
-    {props.label && (
-      <Text
-        style={
-          props.focused
-            ? Object.assign({}, styles.label, styles.activeLabel)
-            : Object.assign({}, styles.label, styles.notActiveLabel)
-        }
-      >
-        {props.label}
-      </Text>
-    )}
-  </View>
+  <Icon.MaterialIcons
+    name={props.name}
+    size={26}
+    color={props.focused ? PRIMARY[100] : PRIMARY[200]}
+  />
 );
+
 TabBarIcon.propTypes = {
   name: PropTypes.string.isRequired,
   focused: PropTypes.bool.isRequired,
 };
 
 MaterialIcons.propTypes = {
-  label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };
 
 MaterialCommunityIcons.propTypes = {
-  label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };
 export default TabBarIcon;

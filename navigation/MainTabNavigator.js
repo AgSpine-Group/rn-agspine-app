@@ -38,8 +38,7 @@ const BottomTabNavigatorConfig = {
     };
   },
   tabBarOptions: {
-    showLabel: false,
-    activeTintColor: PRIMARY[500],
+    activeTintColor: PRIMARY[100],
     inactiveTintColor: PRIMARY[200],
     style: {
       backgroundColor: PRIMARY[400],
