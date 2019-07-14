@@ -6,6 +6,7 @@ const PRIMARY = {
   500: '#239E1E',
   600: '#289124',
   700: '#297026',
+  800: '#064C04',
 };
 
 const GREY = {
@@ -18,6 +19,7 @@ const GREY = {
 };
 
 const SECONDARY = {
+  300: '#EFB33B',
   200: '#F9DA69',
 };
 
