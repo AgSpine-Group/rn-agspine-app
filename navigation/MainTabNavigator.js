@@ -46,15 +46,19 @@ const BottomTabNavigatorConfig = {
   },
 };
 
+const topHeaderStyles = navigation => ({
+  headerLeft: <DrawerIcon navigation={navigation} />,
+  headerStyle: {
+    backgroundColor: PRIMARY[400],
+  },
+});
+
 const HomeStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state;
-      return {
-        headerTitle: routeName,
-        headerLeft: <DrawerIcon navigation={navigation} />,
-      };
+      return topHeaderStyles(navigation);
     },
   },
 
@@ -66,10 +70,7 @@ const FormStack = createStackNavigator({
     screen: FormsScreen,
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state;
-      return {
-        headerTitle: routeName,
-        headerLeft: <DrawerIcon navigation={navigation} />,
-      };
+      return topHeaderStyles(navigation);
     },
   },
   FormScreen: {
@@ -85,10 +86,7 @@ const LocationStack = createStackNavigator({
     screen: LocationListScreen,
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state;
-      return {
-        headerTitle: routeName,
-        headerLeft: <DrawerIcon navigation={navigation} />,
-      };
+      return topHeaderStyles(navigation);
     },
   },
   // ....Add more screens for each stack here
@@ -99,10 +97,7 @@ const CalculatorStack = createStackNavigator({
     screen: CalculatorListScreen,
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state;
-      return {
-        headerTitle: routeName,
-        headerLeft: <DrawerIcon navigation={navigation} />,
-      };
+      return topHeaderStyles(navigation);
     },
   },
   // ....Add more screens for each stack here
@@ -193,7 +188,7 @@ const MainNavigator = createDrawerNavigator({
 export const DrawerIcon = props => (
   <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
     <Image
-      style={{ marginLeft: 15, width: 24, height: 24, backgroundColor: '#add8e6' }}
+      style={{ marginLeft: 15, width: 24, height: 24, backgroundColor: PRIMARY[400] }}
       source={require('./../assets/images/icon_hamburger.png')}
     />
   </TouchableOpacity>
