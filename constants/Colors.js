@@ -1,8 +1,27 @@
 const PRIMARY = {
+  100: '#DFFFDD',
   200: '#A5E0A2',
+  300: '#BDECBB',
   400: '#34AD2F',
-  500: '#289124',
+  500: '#239E1E',
+  600: '#289124',
+  700: '#297026',
 };
+
+const GREY = {
+  300: '#EDF0ED',
+  400: '#CFD7CE',
+  500: '#939C93',
+  600: '#7E847E',
+  700: '#6A716A',
+  800: '#565956',
+};
+
+const SECONDARY = {
+  200: '#F9DA69',
+};
+
+const WHITE = '#FFF';
 
 const buttonColors = {
   // Green
@@ -25,7 +44,7 @@ const colors = {
   SECONDARY_TEXT_COLOR: '#FFF',
 };
 
-export { PRIMARY };
+export { PRIMARY, GREY, SECONDARY, WHITE };
 export default {
   ...colors,
   ...buttonColors,
