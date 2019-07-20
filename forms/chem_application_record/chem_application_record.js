@@ -3,7 +3,10 @@ const chemFormData = {
   date: '',
   applicator_name: '',
   paddock: {
-    identification: '',
+    identification: {
+      locationName: '',
+      locationId: '',
+    },
     treatment_area: '',
     growth_stage: '',
     crop_situation: '',

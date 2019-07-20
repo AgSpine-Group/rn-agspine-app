@@ -1,12 +1,13 @@
 export default {
   formData: {
     loading: false,
-    error: false,
+    error: {},
     data: [],
   },
   submittedForms: {
     loading: false,
-    error: false,
+    error: {},
     data: [],
   },
+  profile: {},
 };
