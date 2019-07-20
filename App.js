@@ -1,17 +1,19 @@
 import * as React from 'react';
 import firebase from 'firebase';
+import { Provider } from 'react-redux';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading } from 'expo';
-import Icon from '@expo/vector-icons';
+import * as Icon from '@expo/vector-icons';
 import Font from 'expo-font';
-import { Provider } from 'react-redux';
+
 import { PersistGate } from 'redux-persist/integration/react';
 import PropTypes from 'prop-types';
 import NetworkWrapper from './components/NetworkWrapper';
 import AppNavigator from './navigation/AppNavigator';
 import configStore from './redux/store';
-import initializeDB from './db';
+import fbInitialize from './firebase';
 import LoginScreen from './screens/LoginScreen';
+import { getAndPersistProfileAsync } from './redux/actions/profile';
 
 const styles = StyleSheet.create({
   container: {
@@ -44,7 +46,7 @@ export default class App extends React.Component {
 
     // Initialize Firebase
     if (!firebase.apps.length) {
-      initializeDB();
+      fbInitialize();
     }
   }
 
@@ -62,26 +64,34 @@ export default class App extends React.Component {
 
   handleLoadingError = error => error;
 
-  handleFinishLoading = () => {
+  handleFinishLoading = async () => {
+    await this.setPersistedProfile();
     return this.setState({ isLoadingComplete: true });
   };
 
   setPersistedState = async () => {
     const { persistor, store } = configStore();
+
     return this.setState({
       persistor,
       store,
     });
   };
 
+  setPersistedProfile = async () => {
+    const { store } = this.state;
+    return store.dispatch(getAndPersistProfileAsync());
+  };
+
   checkAuth = async () => {
-    await firebase.auth().onAuthStateChanged(
-      user =>
-        user &&
+    await firebase.auth().onAuthStateChanged(user => {
+      if (user) {
         this.setState({
           isLoggedIn: true,
-        })
-    );
+        });
+      }
+      return null;
+    });
   };
 
   render() {
@@ -95,6 +105,9 @@ export default class App extends React.Component {
         />
       );
     }
+    // Cleans out data from the persisted redux
+    // Need to decide what reducers to whitelist for offline behaviour
+    this.state.persistor.purge();
     return (
       <Provider store={store}>
         <PersistGate persistor={persistor}>

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import uuid from 'uuid-v4';
 import { LOCAL_STORAGE_PATHS } from '../constants';
+import firebase from '../../firebase';
 
 // Reference for inspiration
 // https://jslancer.com/blog/2017/05/23/no-internet-no-problem/
@@ -50,8 +51,6 @@ const submitFormDataFailure = error => ({
 const submitFormDataAsync = (data, formId) => async dispatch => {
   const syncId = uuid();
   const dataWithKey = { ...data, syncId, formId };
-
-  console.log(data);
   try {
     dispatch(submitForm({ data: dataWithKey, syncId, formId }));
   } catch (ex) {

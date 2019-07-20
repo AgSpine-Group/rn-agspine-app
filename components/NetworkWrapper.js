@@ -1,7 +1,7 @@
 import { NetInfo } from 'react-native';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import connectionState from '../redux/actions/connection';
+import { connectionState } from '../redux/actions/connection';
 
 export default class NetworkWrapper extends React.PureComponent {
   componentDidMount() {

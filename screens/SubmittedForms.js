@@ -1,31 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import { StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { Container, Content, List, ListItem, Text } from 'native-base';
-// import { StackActions } from 'react-navigation';
+import { fetchSubmittedFormsAsync } from '../redux/actions/submitted_forms';
+import { dateUtils } from '../utils';
 
-// const pushToForm = (item) => StackActions.push({
-//   routeName: 'Form', params: {
-//     formId: item.id
-//   }
-// });
+const ListItemComponent = ({ data }) => (
+  <ListItem key={data.uid}>
+    <Text>{data.applicator_name}</Text>
+    <Text>{dateUtils.dateStamp(data.date)}</Text>
+    <Text>{data.formId}</Text>
+  </ListItem>
+);
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: 15,
-//     backgroundColor: '#fff',
-//   },
-//   item: {
-//     padding: 10,
-//     fontSize: 18,
-//     height: 44,
-//     backgroundColor: 'grey',
-//   },
-//   title: {
-//     fontSize: 22,
-//   },
-// });
+ListItemComponent.propTypes = {
+  data: PropTypes.shape({
+    uid: PropTypes.string.isRequired,
+    applicator_name: PropTypes.string.isRequired,
+    formId: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 class SubmitedList extends React.Component {
   static navigationOptions = {
@@ -33,18 +28,16 @@ class SubmitedList extends React.Component {
   };
 
   render() {
+    this.componentDidMount = async () => {
+      await this.props.fetchSubmittedFormsAsync();
+    };
     return (
       <Container>
         <Content>
           <List>
-            {this.props.formData.map(data => (
-              <ListItem key={data.id}>
-                <Text>{data.payload.data.applicator_name}</Text>
-                <Text>{data.payload.data.date}</Text>
-                <Text>{data.payload.data.property}</Text>
-                <Text>{data.payload.data.formId}</Text>
-              </ListItem>
-            ))}
+            {this.props.submittedFormData.map(data => {
+              return <ListItemComponent data={data} key={data.uid} />;
+            })}
           </List>
         </Content>
       </Container>
@@ -52,13 +45,28 @@ class SubmitedList extends React.Component {
   }
 }
 
+SubmitedList.propTypes = {
+  submittedFormData: PropTypes.arrayOf(
+    PropTypes.shape({
+      uid: PropTypes.string.isRequired,
+      formId: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  fetchSubmittedFormsAsync: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = state => {
   return {
-    formData: state.formData.data || [],
+    submittedFormData: state.submittedFormData.data || [],
+    profile: state.profile,
   };
+};
+
+const mapDispatchToProps = {
+  fetchSubmittedFormsAsync,
 };
 
 export default connect(
   mapStateToProps,
-  {}
+  mapDispatchToProps
 )(SubmitedList);
