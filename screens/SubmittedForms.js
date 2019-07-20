@@ -1,34 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import { StyleSheet } from 'react-native';
 import { Container, Content, List, ListItem, Text } from 'native-base';
 import { fetchSubmittedFormsAsync } from '../redux/actions/submitted_forms';
+import { dateUtils } from '../utils';
 
-// import { StackActions } from 'react-navigation';
+const ListItemComponent = ({ data }) => (
+  <ListItem key={data.uid}>
+    <Text>{data.applicator_name}</Text>
+    <Text>{dateUtils.dateStamp(data.date)}</Text>
+    <Text>{data.formId}</Text>
+  </ListItem>
+);
 
-// const pushToForm = (item) => StackActions.push({
-//   routeName: 'Form', params: {
-//     formId: item.id
-//   }
-// });
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: 15,
-//     backgroundColor: '#fff',
-//   },
-//   item: {
-//     padding: 10,
-//     fontSize: 18,
-//     height: 44,
-//     backgroundColor: 'grey',
-//   },
-//   title: {
-//     fontSize: 22,
-//   },
-// });
+ListItemComponent.propTypes = {
+  data: PropTypes.shape({
+    uid: PropTypes.string.isRequired,
+    applicator_name: PropTypes.string.isRequired,
+    formId: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 class SubmitedList extends React.Component {
   static navigationOptions = {
@@ -43,13 +35,9 @@ class SubmitedList extends React.Component {
       <Container>
         <Content>
           <List>
-            {this.props.submittedFormData.map(data => (
-              <ListItem key={data.id}>
-                <Text>{data.payload.data.applicator_name}</Text>
-                <Text>{data.payload.data.date}</Text>
-                <Text>{data.payload.data.formId}</Text>
-              </ListItem>
-            ))}
+            {this.props.submittedFormData.map(data => {
+              return <ListItemComponent data={data} key={data.uid} />;
+            })}
           </List>
         </Content>
       </Container>
@@ -60,7 +48,7 @@ class SubmitedList extends React.Component {
 SubmitedList.propTypes = {
   submittedFormData: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      uid: PropTypes.string.isRequired,
       formId: PropTypes.string.isRequired,
     })
   ).isRequired,

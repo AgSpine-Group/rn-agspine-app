@@ -7,7 +7,7 @@ import { createOffline } from '@redux-offline/redux-offline';
 import offlineConfig from '@redux-offline/redux-offline/lib/defaults';
 
 import { persistStore, persistReducer } from 'redux-persist';
-import rootReducer from '../reducers/index';
+import rootReducer from '../reducers';
 
 const persistConfig = {
   storage: AsyncStorage,

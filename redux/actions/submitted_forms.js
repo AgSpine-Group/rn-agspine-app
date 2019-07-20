@@ -8,10 +8,12 @@ const fetchSubmittedFormsRequest = () => ({
   type: FETCH_SUBMITTED_FORMS_REQUEST,
 });
 
-const fetchSubmittedFormsSuccess = data => ({
-  type: FETCH_SUBMITTED_FORMS_SUCCESS,
-  data,
-});
+const fetchSubmittedFormsSuccess = data => {
+  return {
+    type: FETCH_SUBMITTED_FORMS_SUCCESS,
+    data,
+  };
+};
 const fetchSubmittedFormsError = error => ({
   type: FETCH_SUBMITTED_FORMS_ERROR,
   error,
@@ -21,37 +23,26 @@ export const fetchSubmittedFormsAsync = () => async (dispatch, getState) => {
   const store = getState();
   fetchSubmittedFormsRequest();
   const { organisationId } = store.profile;
-
-  console.log(organisationId);
   try {
-    const doc = firebase
+    let data = [];
+
+    await firebase
       .firestore()
       .collection('submittedForms')
       .where('organisationId', '==', organisationId)
-      .get();
-    // .then(snapshot => {
-    //   snapshot.forEach(x => {
-    //     if (snapshot.empty) {
-    //       console.log('No matching documents.');
-    //       return;
-    //     }
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(snap => {
+          data.push(snap.data());
+        });
+      });
 
-    //     const data = snapshot.forEach(doc => {
-    //       console.log(doc.id, '=>', doc.data());
-    //     });
-    //   });
-    // });
-
-    console.log(doc);
-    // const data = doc.map(x => x.data());
-
-    // console.log(data);
-    if (!doc.empty) {
-      fetchSubmittedFormsSuccess(doc.data());
+    if (!data.length) {
+      throw new Error('No current documents');
     }
-    throw new Error('No current documents');
+    return dispatch(fetchSubmittedFormsSuccess(data));
   } catch (ex) {
-    dispatch(fetchSubmittedFormsError(ex));
+    return dispatch(fetchSubmittedFormsError(ex));
   }
 };
 
@@ -63,7 +54,6 @@ const initialState = {
 
 export const submittedFormReducer = (state = initialState, action) => {
   const { data = [], error = {} } = action;
-
   switch (action.type) {
     case FETCH_SUBMITTED_FORMS_SUCCESS: {
       return {
@@ -77,7 +67,7 @@ export const submittedFormReducer = (state = initialState, action) => {
       return {
         loading: false,
         error,
-        // Preserve data
+        // Preserve data if there is an error
         data: state.data,
       };
     }

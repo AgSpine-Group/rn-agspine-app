@@ -13,7 +13,7 @@ import AppNavigator from './navigation/AppNavigator';
 import configStore from './redux/store';
 import fbInitialize from './firebase';
 import LoginScreen from './screens/LoginScreen';
-import { getAndPersistProfile } from './redux/actions/profile';
+import { getAndPersistProfileAsync } from './redux/actions/profile';
 
 const styles = StyleSheet.create({
   container: {
@@ -80,7 +80,7 @@ export default class App extends React.Component {
 
   setPersistedProfile = async () => {
     const { store } = this.state;
-    return store.dispatch(getAndPersistProfile());
+    return store.dispatch(getAndPersistProfileAsync());
   };
 
   checkAuth = async () => {
@@ -105,6 +105,9 @@ export default class App extends React.Component {
         />
       );
     }
+    // Cleans out data from the persisted redux
+    // Need to decide what reducers to whitelist for offline behaviour
+    this.state.persistor.purge();
     return (
       <Provider store={store}>
         <PersistGate persistor={persistor}>

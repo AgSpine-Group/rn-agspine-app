@@ -23,7 +23,6 @@ InputContainer.propTypes = {
 
 /* eslint-disable */
 const ChemForm = props => {
-  // console.log(props);
   const {
     data,
     data: { paddock, pest_details },
@@ -41,7 +40,7 @@ const ChemForm = props => {
           <DatePicker
             placeHolderText="Select date"
             placeHolderTextStyle={{ color: '#d3d3d3' }}
-            onDateChange={onChange('date')}
+            onDateChange={date => onChange('date')(new Date(date).toISOString())}
             value={data.date}
             defaultDate={new Date()}
           />
