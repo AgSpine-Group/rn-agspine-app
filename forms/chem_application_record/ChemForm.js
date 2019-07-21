@@ -1,13 +1,35 @@
 import React from 'react';
+import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import { Container, Content, Item, Input, Label, DatePicker, Picker } from 'native-base';
-import { Entypo } from '@expo/vector-icons';
+import {
+  Container,
+  Content,
+  Item,
+  Input,
+  Label,
+  DatePicker,
+  Picker,
+  Text,
+  Button,
+  Icon,
+} from 'native-base';
+
 import { SECONDARY } from '../../constants/Colors';
 
-export const LocationPin = () => (
-  <Entypo name="location" style={{ fontSize: 20 }} color={SECONDARY[200]} />
+export const FormIcon = ({ name }) => (
+  <Icon name={name} type="Entypo" style={{ fontSize: 20 }} color={SECONDARY[200]} />
 );
 
+FormIcon.propTypes = {
+  name: PropTypes.string.isRequired,
+};
+
+const ErrorMessage = ({ errors }) =>
+  errors ? <Text style={{ color: 'red' }}>{errors}</Text> : null;
+
+ErrorMessage.propTypes = {
+  errors: PropTypes.string.isRequired,
+};
 const InputContainer = props => (
   <Item stackedLabel last>
     <Label>{props.label}</Label>
@@ -24,94 +46,114 @@ InputContainer.propTypes = {
 /* eslint-disable */
 const ChemForm = props => {
   const {
-    data,
-    data: { paddock, pest_details },
-    onChange,
+    values,
+    values: { paddock, pestDetails, property },
+    handleChange,
+    handleSubmit,
     profile,
+    errors,
   } = props;
 
   return (
     <Container>
       <Content>
-        <Label>Property Info</Label>
-        <InputContainer label="Property" onChange={onChange('property')} value={data.property} />
+        <Picker
+          placeholder="Select a property"
+          style={{ height: 100 }}
+          iosIcon={<FormIcon name="home" />}
+          placeholderStyle={{ maxWidth: '90%' }}
+          onValueChange={handleChange('property')}
+          selectedValue={property.propertyName}
+        >
+          {profile.properties.map(p => {
+            return <Picker.Item label={p.propertyName} value={p} key={p.propertyId} width={100} />;
+          })}
+        </Picker>
+        <ErrorMessage errors={get(errors, 'property.propertyId', '')} />
+
         <Item stackedLabel>
           <Label>Date of application</Label>
           <DatePicker
             placeHolderText="Select date"
             placeHolderTextStyle={{ color: '#d3d3d3' }}
-            onDateChange={date => onChange('date')(new Date(date).toISOString())}
-            value={data.date}
+            onDateChange={date => handleChange('date')(new Date(date).toISOString())}
+            value={values.date}
             defaultDate={new Date()}
           />
         </Item>
+        <ErrorMessage errors={get(errors, 'date', '')} />
 
         <Label>Paddock Info</Label>
         <InputContainer
           label="Applicator name"
-          onChange={onChange('applicator_name')}
-          value={data.applicator_name}
+          onChange={handleChange('applicatorName')}
+          value={values.applicatorName}
         />
+        <ErrorMessage errors={get(errors, 'applicatorName', '')} />
+
         <Picker
           placeholder="Select your location"
           style={{ height: 100 }}
-          iosIcon={<LocationPin />}
+          iosIcon={<FormIcon name="location" />}
           placeholderStyle={{ maxWidth: '90%' }}
-          onValueChange={onChange('paddock.identification')}
+          onValueChange={handleChange('paddock.identification')}
           selectedValue={paddock.identification.locationName}
         >
-          {profile.locationData.map(x => {
-            return <Picker.Item label={x.locationName} value={x} key={x.locationId} width={100} />;
-          })}
+          {profile.locations
+            .filter(x => x.propertyData.propertyId === property.propertyId)
+            .map(x => {
+              return (
+                <Picker.Item label={x.locationName} value={x} key={x.locationId} width={100} />
+              );
+            })}
         </Picker>
+        <ErrorMessage errors={get(errors, 'paddock.identification.locationId', '')} />
 
         <InputContainer
-          label="Paddock reference no:"
-          onChange={onChange('paddock.identification')}
-          value={paddock.identification}
-        />
-        <InputContainer
           label="Treatment area:"
-          onChange={onChange('paddock.treatment_area')}
-          value={paddock.treatment_area}
+          onChange={handleChange('paddock.treatmentArea')}
+          value={paddock.treatmentArea}
         />
         <InputContainer
           label="Growth stage:"
-          onChange={onChange('paddock.growth_stage')}
-          value={paddock.growth_stage}
+          onChange={handleChange('paddock.growthStage')}
+          value={paddock.growthStage}
         />
         <InputContainer
           label="Crop situation:"
-          onChange={onChange('paddock.crop_situation')}
-          value={paddock.crop_situation}
+          onChange={handleChange('paddock.cropSituation')}
+          value={paddock.cropSituation}
         />
         <InputContainer
           label="Comment:"
-          onChange={onChange('paddock.comment')}
+          onChange={handleChange('paddock.comment')}
           value={paddock.comment}
         />
 
         <Label>Pest Info</Label>
         <InputContainer
           label="Pest type:"
-          onChange={onChange('pest_details.pest_type')}
-          value={pest_details.pest_type}
+          onChange={handleChange('pestDetails.pestType')}
+          value={pestDetails.pestType}
         />
         <InputContainer
           label="Growth stage:"
-          onChange={onChange('pest_details.growth_stage')}
-          value={pest_details.growth_stage}
+          onChange={handleChange('pestDetails.growthStage')}
+          value={pestDetails.growthStage}
         />
         <InputContainer
           label="Density:"
-          onChange={onChange('pest_details.density')}
-          value={pest_details.density}
+          onChange={handleChange('pestDetails.density')}
+          value={pestDetails.density}
         />
         <InputContainer
           label="Comments:"
-          onChange={onChange('pest_details.comments')}
-          value={pest_details.comments}
+          onChange={handleChange('pestDetails.comments')}
+          value={pestDetails.comments}
         />
+        <Button primary full onPress={handleSubmit}>
+          <Text>Create</Text>
+        </Button>
       </Content>
     </Container>
   );

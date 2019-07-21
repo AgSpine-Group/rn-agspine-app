@@ -20,7 +20,7 @@ const getAndPersistProfileAsync = () => async dispatch => {
     try {
       await firebase
         .firestore()
-        .collection('profileData')
+        .collection('profiles')
         .doc(user.uid)
         .get()
         .then(async snapshot => {
@@ -28,7 +28,7 @@ const getAndPersistProfileAsync = () => async dispatch => {
             // Fetch profile from Hub
             // Test profile with locations for now
             // Saves to firebase and fetches on signin
-            const profile = createTestProfile();
+            const { profile, properties, locations } = createTestProfile();
             const userProfile = Object.assign({}, profile, {
               name: user.displayName,
               email: user.email,
@@ -36,11 +36,41 @@ const getAndPersistProfileAsync = () => async dispatch => {
               uid: user.uid,
             });
 
-            await firebase
+            const batch = firebase.firestore().batch();
+
+            const profileRef = firebase
               .firestore()
-              .collection('profileData')
-              .doc(user.uid)
-              .set(userProfile);
+              .collection('profiles')
+              .doc(user.uid);
+
+            const propertyRefs = properties.map(x => ({
+              ref: firebase
+                .firestore()
+                .collection('properties')
+                .doc(x.propertyId),
+              id: x.propertyId,
+              data: x,
+            }));
+
+            const locationRefs = locations.map(x => ({
+              ref: firebase
+                .firestore()
+                .collection('locations')
+                .doc(x.locationId),
+              id: x.locationId,
+              data: x,
+            }));
+
+            // Set profile
+            batch.set(profileRef, profile);
+
+            // Set properties for profile
+            propertyRefs.forEach(pr => batch.set(pr.ref, pr.data));
+
+            // Set locations on properties
+            locationRefs.forEach(lr => batch.set(lr.ref, lr.data));
+
+            await batch.commit();
 
             dispatch(profileCreatedSuccessfully(userProfile));
           } else {
