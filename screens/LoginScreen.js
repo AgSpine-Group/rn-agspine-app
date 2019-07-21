@@ -70,6 +70,7 @@ const loginStyles = {
   },
   card: {
     padding: 10,
+    height: height * 0.8,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     backgroundColor: 'white',
@@ -129,11 +130,13 @@ const loginStyles = {
       justifyContent: 'flex-end'
     },
     inactiveText: {
+      margin: 10,
       fontSize: 12,
       color: GREY[600]
     },
     activeText: {
       fontSize: 12,
+      margin: 10,
       color: PRIMARY[800]
     }
   },
@@ -340,9 +343,6 @@ export default class LoginScreen extends React.Component {
                 <Icon name='google' type='AntDesign' style={loginStyles.outlineButtonText} />
                 <Text style={loginStyles.outlineButtonText}>{this.state.type === 'sign-up' ? 'Sign' : 'Log'} In With google</Text>
               </Button>
-
-              <View style={loginStyles.spacer}>
-              </View>
             </Form>
           </View>
         </Animated.View>
