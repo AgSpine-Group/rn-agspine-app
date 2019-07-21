@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
 });
 
 export const AuthenticationWrapper = ({ authed }) => {
-  // if (authed) {
-  //   return <AppNavigator />;
-  // }
+  if (authed) {
+    return <AppNavigator />;
+  }
 
   return <LoginScreen />;
 };
