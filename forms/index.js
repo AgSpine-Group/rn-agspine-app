@@ -1,5 +1,6 @@
 import chemFormData from './chem_application_record/chem_application_record';
-import ChemForm from './chem_application_record/ChemForm';
+// import ChemForm from './chem_application_record/ChemForm';
+import ChemForm from './chem_application_record';
 
 const formData = [
   {
