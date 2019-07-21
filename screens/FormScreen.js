@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import { Title, Container } from 'native-base';
 import { submitFormDataAsync } from '../redux/actions/form_submit';
-import ChemForm from '../forms/chem_application_record';
 import forms from '../forms';
 
 const styles = StyleSheet.create({
@@ -21,15 +20,15 @@ class FormScreen extends React.Component {
   constructor(props) {
     super(props);
     this.formId = this.props.navigation.getParam('formId', null);
-    this.form = forms.map(formTypes => formTypes.forms.find(x => x.id === this.formId));
+    [this.form] = forms.map(formTypes => formTypes.forms.find(x => x.id === this.formId));
   }
 
   render() {
-    const header = this.form[0].title;
+    const header = this.form.title;
     return (
       <Container style={styles.formContainer}>
         <Title style={styles.formHeader}>{header}</Title>
-        <ChemForm
+        <this.form.Component
           profile={this.props.profile}
           navigation={this.props.navigation}
           formId={this.formId}
