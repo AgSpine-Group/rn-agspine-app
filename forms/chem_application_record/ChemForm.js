@@ -11,16 +11,18 @@ import {
   Picker,
   Text,
   Button,
+  Icon,
 } from 'native-base';
-import { Entypo } from '@expo/vector-icons';
+
 import { SECONDARY } from '../../constants/Colors';
 
-export const LocationPin = () => (
-  <Entypo name="location" style={{ fontSize: 20 }} color={SECONDARY[200]} />
+export const FormIcon = ({ name }) => (
+  <Icon name={name} type="Entypo" style={{ fontSize: 20 }} color={SECONDARY[200]} />
 );
-export const HouseIcon = () => (
-  <Entypo name="home" style={{ fontSize: 20 }} color={SECONDARY[200]} />
-);
+
+FormIcon.propTypes = {
+  name: PropTypes.string.isRequired,
+};
 
 const ErrorMessage = ({ errors }) =>
   errors ? <Text style={{ color: 'red' }}>{errors}</Text> : null;
@@ -58,7 +60,7 @@ const ChemForm = props => {
         <Picker
           placeholder="Select a property"
           style={{ height: 100 }}
-          iosIcon={<HouseIcon />}
+          iosIcon={<FormIcon name="home" />}
           placeholderStyle={{ maxWidth: '90%' }}
           onValueChange={handleChange('property')}
           selectedValue={property.propertyName}
@@ -92,7 +94,7 @@ const ChemForm = props => {
         <Picker
           placeholder="Select your location"
           style={{ height: 100 }}
-          iosIcon={<LocationPin />}
+          iosIcon={<FormIcon name="location" />}
           placeholderStyle={{ maxWidth: '90%' }}
           onValueChange={handleChange('paddock.identification')}
           selectedValue={paddock.identification.locationName}
