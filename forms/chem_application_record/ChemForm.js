@@ -47,7 +47,7 @@ InputContainer.propTypes = {
 const ChemForm = props => {
   const {
     values,
-    values: { paddock, pestDetails, property },
+    values: { area, pestDetails, location },
     handleChange,
     handleSubmit,
     profile,
@@ -58,18 +58,18 @@ const ChemForm = props => {
     <Container>
       <Content>
         <Picker
-          placeholder="Select a property"
+          placeholder="Select a location"
           style={{ height: 100 }}
           iosIcon={<FormIcon name="home" />}
           placeholderStyle={{ maxWidth: '90%' }}
-          onValueChange={handleChange('property')}
-          selectedValue={property.propertyName}
+          onValueChange={l => handleChange('location')({ id: l.id, locationName: l.locationName })}
+          selectedValue={location.locationName}
         >
-          {profile.properties.map(p => {
-            return <Picker.Item label={p.propertyName} value={p} key={p.propertyId} width={100} />;
+          {profile.locations.map(l => {
+            return <Picker.Item label={l.locationName} value={l} key={l.id} width={100} />;
           })}
         </Picker>
-        <ErrorMessage errors={get(errors, 'property.propertyId', '')} />
+        <ErrorMessage errors={get(errors, 'location.id', '')} />
 
         <Item stackedLabel>
           <Label>Date of application</Label>
@@ -83,7 +83,7 @@ const ChemForm = props => {
         </Item>
         <ErrorMessage errors={get(errors, 'date', '')} />
 
-        <Label>Paddock Info</Label>
+        <Label>Area Information</Label>
         <InputContainer
           label="Applicator name"
           onChange={handleChange('applicatorName')}
@@ -92,42 +92,45 @@ const ChemForm = props => {
         <ErrorMessage errors={get(errors, 'applicatorName', '')} />
 
         <Picker
-          placeholder="Select your location"
+          placeholder="Select an area"
           style={{ height: 100 }}
           iosIcon={<FormIcon name="location" />}
           placeholderStyle={{ maxWidth: '90%' }}
-          onValueChange={handleChange('paddock.identification')}
-          selectedValue={paddock.identification.locationName}
+          onValueChange={val =>
+            handleChange('area.identification')({
+              id: val.id,
+              areaName: val.areaName,
+            })
+          }
+          selectedValue={area.identification.areaName}
         >
-          {profile.locations
-            .filter(x => x.propertyData.propertyId === property.propertyId)
+          {profile.areas
+            .filter(a => a.location.id === location.id)
             .map(x => {
-              return (
-                <Picker.Item label={x.locationName} value={x} key={x.locationId} width={100} />
-              );
+              return <Picker.Item label={x.areaName} value={x} key={x.id} width={100} />;
             })}
         </Picker>
-        <ErrorMessage errors={get(errors, 'paddock.identification.locationId', '')} />
+        <ErrorMessage errors={get(errors, 'area.identification.id', '')} />
 
         <InputContainer
           label="Treatment area:"
-          onChange={handleChange('paddock.treatmentArea')}
-          value={paddock.treatmentArea}
+          onChange={handleChange('area.treatmentArea')}
+          value={area.treatmentArea}
         />
         <InputContainer
           label="Growth stage:"
-          onChange={handleChange('paddock.growthStage')}
-          value={paddock.growthStage}
+          onChange={handleChange('area.growthStage')}
+          value={area.growthStage}
         />
         <InputContainer
           label="Crop situation:"
-          onChange={handleChange('paddock.cropSituation')}
-          value={paddock.cropSituation}
+          onChange={handleChange('area.cropSituation')}
+          value={area.cropSituation}
         />
         <InputContainer
           label="Comment:"
-          onChange={handleChange('paddock.comment')}
-          value={paddock.comment}
+          onChange={handleChange('area.comment')}
+          value={area.comment}
         />
 
         <Label>Pest Info</Label>

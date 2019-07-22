@@ -28,7 +28,7 @@ const getAndPersistProfileAsync = () => async dispatch => {
             // Fetch profile from Hub
             // Test profile with locations for now
             // Saves to firebase and fetches on signin
-            const { profile, properties, locations } = createTestProfile();
+            const { profile, areas, locations } = createTestProfile();
             const userProfile = Object.assign({}, profile, {
               name: user.displayName,
               email: user.email,
@@ -43,32 +43,34 @@ const getAndPersistProfileAsync = () => async dispatch => {
               .collection('profiles')
               .doc(user.uid);
 
-            const propertyRefs = properties.map(x => ({
-              ref: firebase
-                .firestore()
-                .collection('properties')
-                .doc(x.propertyId),
-              id: x.propertyId,
-              data: x,
-            }));
+            const locationRefs = locations.map(x => {
+              return {
+                ref: firebase
+                  .firestore()
+                  .collection('locations')
+                  .doc(x.id),
+                id: x.id,
+                data: x,
+              };
+            });
 
-            const locationRefs = locations.map(x => ({
+            const areaRefs = areas.map(x => ({
               ref: firebase
                 .firestore()
-                .collection('locations')
-                .doc(x.locationId),
-              id: x.locationId,
+                .collection('areas')
+                .doc(x.id),
+              id: x.id,
               data: x,
             }));
 
             // Set profile
             batch.set(profileRef, profile);
 
-            // Set properties for profile
-            propertyRefs.forEach(pr => batch.set(pr.ref, pr.data));
+            // Set locations for profile
+            locationRefs.forEach(pr => batch.set(pr.ref, pr.data));
 
-            // Set locations on properties
-            locationRefs.forEach(lr => batch.set(lr.ref, lr.data));
+            // Set areas on locations
+            areaRefs.forEach(lr => batch.set(lr.ref, lr.data));
 
             await batch.commit();
 

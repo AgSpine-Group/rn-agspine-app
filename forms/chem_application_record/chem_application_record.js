@@ -1,14 +1,14 @@
 const chemFormData = {
-  property: {
-    propertyId: '',
-    propertyName: '',
+  location: {
+    id: '',
+    locationName: '',
   },
   date: '',
   applicatorName: '',
-  paddock: {
+  area: {
     identification: {
-      locationName: '',
-      locationId: '',
+      areaName: '',
+      id: '',
     },
     treatmentArea: '',
     growthStage: '',
