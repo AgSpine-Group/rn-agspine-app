@@ -24,7 +24,7 @@ class FormScreen extends React.Component {
   }
 
   render() {
-    const header = this.form.title;
+    const header = this.form && this.form.title;
     return (
       <Container style={styles.formContainer}>
         <Title style={styles.formHeader}>{header}</Title>
