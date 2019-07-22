@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
-import { StackActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 import ChemForm from './ChemForm';
 import chemApplicationRecord from './chem_application_record';
 
@@ -48,10 +48,14 @@ const submitDataToFirebase = async ({ organisationId, values, formId }) => {
 const submitData = async ({ organisationId, values, formId, navigation }) => {
   await submitDataToFirebase({ organisationId, values, formId });
 
-  const resetAction = StackActions.replace({
-    routeName: 'SubmittedForms',
-  });
-  navigation.dispatch(resetAction);
+  navigation.navigate(
+    'Locations',
+    {},
+    NavigationActions.navigate({
+      routeName: 'Area',
+      params: { areaId: values.area.identification.id },
+    })
+  );
 };
 
 // eslint-disable-next-line
