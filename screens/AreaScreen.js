@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
   formContainer: {
     display: 'flex',
     flexDirection: 'column',
+    marginLeft: 10,
     flex: 3,
   },
   monthTitle: {
