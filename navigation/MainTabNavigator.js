@@ -14,7 +14,6 @@ import HomeScreen from '../screens/HomeScreen';
 import FormsScreen from '../screens/FormListScreen';
 import CalculatorListScreen from '../screens/CalculatorListScreen';
 import LocationListScreen from '../screens/LocationListScreen';
-import AreaScreen from '../screens/AreaScreen';
 import FormScreen from '../screens/FormScreen';
 import SubmittedForms from '../screens/SubmittedForms';
 
@@ -84,7 +83,7 @@ const FormStack = createStackNavigator({
 });
 const LocationStack = createStackNavigator({
   Locations: {
-    screen: AreaScreen,
+    screen: LocationListScreen,
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state;
       return topHeaderStyles(navigation);
@@ -95,7 +94,7 @@ const LocationStack = createStackNavigator({
 
 const CalculatorStack = createStackNavigator({
   Calculators: {
-    screen: LocationListScreen,
+    screen: CalculatorListScreen,
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state;
       return topHeaderStyles(navigation);
