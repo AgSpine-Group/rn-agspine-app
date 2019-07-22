@@ -56,12 +56,13 @@ const topHeaderStyles = navigation => ({
 
 const HomeStack = createStackNavigator({
   Home: {
-    screen: HomeScreen,
+    screen: SubmittedForms,
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state;
       return topHeaderStyles(navigation);
     },
   },
+
 
   // ....Add more screens for each stack here
 });
@@ -76,9 +77,6 @@ const FormStack = createStackNavigator({
   },
   FormScreen: {
     screen: FormScreen,
-  },
-  SubmittedForms: {
-    screen: SubmittedForms,
   },
   // ....Add more screens for each stack here
 });

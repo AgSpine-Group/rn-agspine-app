@@ -23,9 +23,6 @@ ListItemComponent.propTypes = {
 };
 
 class SubmitedList extends React.Component {
-  static navigationOptions = {
-    title: 'Submitted forms',
-  };
 
   render() {
     this.componentDidMount = async () => {
