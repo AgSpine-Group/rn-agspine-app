@@ -6,6 +6,8 @@ import { Text } from 'native-base';
 import { StackActions } from 'react-navigation';
 import { submitFormDataAsync } from '../redux/actions/form_submit';
 import forms from '../forms';
+import ListItem from '../components/ListItem';
+import { GREY } from '../constants/Colors';
 
 const pushToForm = item =>
   StackActions.push({
@@ -22,6 +24,12 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#fff',
   },
+  background: {
+    flex: 1,
+    backgroundColor: GREY[300],
+    flexDirection: 'column',
+    padding: 8,
+  },
   item: {
     fontSize: 18,
     height: 44,
@@ -36,49 +44,23 @@ const styles = StyleSheet.create({
   },
 });
 
-const FormListComponent = props => {
-  return (
-    <View style={styles.formListContainer}>
-      <Text style={styles.title}>{props.title}</Text>
-      <FlatList
-        data={props.forms}
-        renderItem={({ item }) => (
-          <Button
-            onPress={() => {
-              props.navigation.dispatch(pushToForm(item));
-            }}
-            style={styles.item}
-            title={item.title}
-          />
-        )}
-      />
-    </View>
-  );
-};
-
-FormListComponent.propTypes = {
-  title: PropTypes.string.isRequired,
-  forms: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
 
 class FormsScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Forms',
-  };
-
   render() {
     const { navigation } = this.props;
 
     return (
-      <ScrollView style={styles.container}>
-        {forms.map(x => (
-          <FormListComponent
-            navigation={navigation}
-            title={x.title}
-            forms={x.forms}
-            key={x.title}
-          />
-        ))}
+      <ScrollView style={styles.background}>
+        {
+          forms.map(form =>
+            <ListItem
+              name={form.title}
+              description={form.description}
+              type="form"
+              action={() => navigation.dispatch(pushToForm(form))}
+            />
+          )
+        }
       </ScrollView>
     );
   }

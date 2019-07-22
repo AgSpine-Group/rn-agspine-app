@@ -6,4 +6,7 @@ const fb = config => () => {
   return firebase.initializeApp(config);
 };
 
+console.disableYellowBox = true;
+console.reportErrorsAsExceptions = false;
+
 export default fb(env.dbConfig);
