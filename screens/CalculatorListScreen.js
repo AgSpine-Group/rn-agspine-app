@@ -4,7 +4,7 @@ import { StyleSheet, ScrollView } from 'react-native';
 import { Container } from 'native-base';
 import { GREY } from '../constants/Colors';
 
-import ListItem from '../components/ListItem'
+import ListItem from '../components/ListItem';
 
 const style = StyleSheet.create({
   background: {
@@ -18,15 +18,15 @@ const style = StyleSheet.create({
 const calculators = [
   {
     name: 'Good Size',
-    description: 'fuark, not bad good size.',
+    description: 'not bad good size.',
   },
   {
     name: 'Good Size',
-    description: 'fuark, not bad good size.',
+    description: 'not bad good size.',
   },
   {
     name: 'Good Size',
-    description: 'fuark, not bad good size.',
+    description: 'not bad good size.',
   },
 ];
 
