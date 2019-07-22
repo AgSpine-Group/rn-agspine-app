@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { Entypo } from '@expo/vector-icons';
 import { Text, View, List, ListItem, Left, Right, Icon } from 'native-base';
 import { PRIMARY, GREY, SECONDARY } from '../../constants/Colors';
@@ -53,27 +54,29 @@ const style = StyleSheet.create({
   },
 });
 
-export default ({ locations }) => (
+const ListComponent = ({ locations, handleAreaNavigation }) => (
   <View>
     <View style={style.locationContainer}>
       <List>
         {locations.map(location => (
           <>
-            <ListItem itemDivider>
-              <Text style={style.locationText}>{location.name}</Text>
+            <ListItem itemDivider key={location.id}>
+              <Text style={style.locationText}>{location.locationName}</Text>
             </ListItem>
             {location.areas.map(area => (
-              <ListItem>
+              <ListItem key={area.id} onPress={handleAreaNavigation(area.id)}>
                 <Left>
                   <View style={Object.assign({}, style.horizontal, style.horizontalCentered)}>
                     <View style={style.locationIcon}>
                       <LocationPin />
                     </View>
                     <View style={style.locationInfo}>
-                      <Text style={style.locationHeader}>{area.name}</Text>
+                      <Text style={style.locationHeader}>{area.areaName}</Text>
                       <View style={style.horizontal}>
                         <Text style={style.lastApplied}>Last Applied:</Text>
-                        <Text style={style.date}>{area.date}</Text>
+                        <Text style={style.date}>
+                          {area.lastAppliedDate ? area.lastAppliedDate : 'No recent history'}
+                        </Text>
                       </View>
                     </View>
                   </View>
@@ -85,7 +88,7 @@ export default ({ locations }) => (
             ))}
             <ListItem>
               <View style={style.addButtonContainer}>
-                <Text style={style.addButtonText}>ADD NEW LOCATION</Text>
+                <Text style={style.addButtonText}>ADD NEW AREA</Text>
               </View>
             </ListItem>
           </>
@@ -95,3 +98,21 @@ export default ({ locations }) => (
     </View>
   </View>
 );
+
+ListComponent.propTypes = {
+  locations: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      locationName: PropTypes.string.isRequired,
+      areas: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          areaName: PropTypes.string.isRequired,
+        })
+      ).isRequired,
+    }).isRequired
+  ).isRequired,
+  handleAreaNavigation: PropTypes.func.isRequired,
+};
+
+export default ListComponent;

@@ -1,19 +1,21 @@
 import React from 'react';
-import { TouchableOpacity, Image } from 'react-native';
+import { TouchableOpacity, Image, View, SafeAreaView, Button, Text } from 'react-native';
+import firebase from 'firebase';
 import {
   createStackNavigator,
   createBottomTabNavigator,
   createDrawerNavigator,
+  DrawerItems,
 } from 'react-navigation';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { MaterialCommunityIcons, MaterialIcons } from '../components/TabBarIcon';
 import { PRIMARY } from '../constants/Colors';
-
 import SettingsScreen from '../screens/SettingsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import FormsScreen from '../screens/FormListScreen';
 import CalculatorListScreen from '../screens/CalculatorListScreen';
 import LocationListScreen from '../screens/LocationListScreen';
+import AreaScreen from '../screens/AreaScreen';
 import FormScreen from '../screens/FormScreen';
 import SubmittedForms from '../screens/SubmittedForms';
 
@@ -88,6 +90,9 @@ const LocationStack = createStackNavigator({
       const { routeName } = navigation.state;
       return topHeaderStyles(navigation);
     },
+  },
+  Area: {
+    screen: AreaScreen,
   },
   // ....Add more screens for each stack here
 });
@@ -174,16 +179,45 @@ const SettingsNavigationOptions = props => ({
 });
 
 // DRAWER
-const MainNavigator = createDrawerNavigator({
-  main: {
-    screen: HomeStackNavigator,
-    navigationOptions: TabNavigationOptions,
+const MainNavigator = createDrawerNavigator(
+  {
+    main: {
+      screen: HomeStackNavigator,
+      navigationOptions: TabNavigationOptions,
+    },
+    setting: {
+      screen: SettingsStackNavigator,
+      navigationOptions: SettingsNavigationOptions,
+    },
   },
-  setting: {
-    screen: SettingsStackNavigator,
-    navigationOptions: SettingsNavigationOptions,
-  },
-});
+  {
+    contentComponent: props => (
+      <View style={{ flex: 1 }}>
+        <SafeAreaView forceInset={{ horizontal: 'never' }}>
+          <DrawerItems {...props} />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignContent: 'center',
+              paddingTop: 13,
+              paddingBottom: 13,
+            }}
+          >
+            <Icon name="setting" size={25} color="black" style={{ paddingLeft: 16 }} {...props} />
+            <Text
+              style={{ color: 'black', alignSelf: 'center', marginLeft: 32, fontWeight: 'bold' }}
+            >
+              Signout
+            </Text>
+          </View>
+        </SafeAreaView>
+      </View>
+    ),
+    drawerOpenRoute: 'DrawerOpen',
+    drawerCloseRoute: 'DrawerClose',
+    drawerToggleRoute: 'DrawerToggle',
+  }
+);
 
 export const DrawerIcon = props => (
   <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>

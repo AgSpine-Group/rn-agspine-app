@@ -8,14 +8,14 @@ import ChemForm from './ChemForm';
 import chemApplicationRecord from './chem_application_record';
 
 const validationSchema = Yup.object().shape({
-  property: Yup.object().shape({
-    propertyId: Yup.string().required('Please select a property'),
+  location: Yup.object().shape({
+    id: Yup.string().required('Please select a property'),
   }),
   date: Yup.string().required('Please specify a date'),
   applicatorName: Yup.string().required('Please specify who applied the chemical'),
-  paddock: Yup.object().shape({
+  area: Yup.object().shape({
     identification: Yup.object().shape({
-      locationId: Yup.string().required('Please select a location for this property'),
+      id: Yup.string().required('Please which area on this property'),
     }),
   }),
 });
