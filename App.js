@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export const AuthenticationWrapper = ({ authed, handleLogout }) => {
+export const AuthenticationWrapper = ({ authed }) => {
   if (authed) {
-    return <AppNavigator handleLogout={handleLogout} />;
+    return <AppNavigator />;
   }
 
   return <LoginScreen />;
@@ -96,18 +96,6 @@ export default class App extends React.Component {
   };
 
 
-  handleLogout = async () => {
-    try {
-      await firebase
-        .auth()
-        .signOut()
-        .then(res => console.log(res));
-    } catch (ex) {
-      console.log(ex);
-      alert(ex);
-    }
-  };
-
   render() {
     const { isLoadingComplete, isLoggedIn, store, persistor } = this.state;
     if (!isLoadingComplete) {
@@ -128,7 +116,7 @@ export default class App extends React.Component {
           <NetworkWrapper dispatch={store.dispatch}>
             <View style={styles.container}>
               {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-              <AuthenticationWrapper authed={isLoggedIn} handleLogout={this.handleLogout} />
+              <AuthenticationWrapper authed={isLoggedIn} />
             </View>
           </NetworkWrapper>
         </PersistGate>
