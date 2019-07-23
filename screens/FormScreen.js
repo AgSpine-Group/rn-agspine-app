@@ -26,8 +26,7 @@ class FormScreen extends React.Component {
   render() {
     const header = this.form && this.form.title;
     return (
-      <Container style={styles.formContainer}>
-        <Title style={styles.formHeader}>{header}</Title>
+      <Container style={{ position: 'relative' }} >
         <this.form.Component
           profile={this.props.profile}
           navigation={this.props.navigation}

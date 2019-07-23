@@ -18,7 +18,6 @@ import LocationListScreen from '../screens/LocationListScreen';
 import AreaScreen from '../screens/AreaScreen';
 import FormScreen from '../screens/FormScreen';
 import SubmittedForms from '../screens/SubmittedForms';
-
 // - AppSwitchNavigator
 // TODO move the auth section to the login/signup page
 //    - WelcomeScreen
@@ -140,11 +139,15 @@ const MainTabNavigator = createBottomTabNavigator(
     },
     Forms: {
       screen: FormStack,
-      navigationOptions: {
-        tabBarLabel: 'Forms',
-        tabBarIcon: ({ focused }) => (
-          <MaterialCommunityIcons focused={focused} name="clipboard-text" label="Forms" />
-        ),
+      navigationOptions: ({ navigation }) => {
+        const { index } = navigation.state;
+        return ({
+          tabBarLabel: 'Forms',
+          tabBarIcon: ({ focused }) => (
+            <MaterialCommunityIcons focused={focused} name="clipboard-text" label="Forms" />
+          ),
+          tabBarVisible: index !== 1
+        })
       },
     },
   },
@@ -205,6 +208,7 @@ const MainNavigator = createDrawerNavigator(
           >
             <Icon name="setting" size={25} color="black" style={{ paddingLeft: 16 }} {...props} />
             <Text
+              onPress={() => props.handleLogout()}
               style={{ color: 'black', alignSelf: 'center', marginLeft: 32, fontWeight: 'bold' }}
             >
               Signout

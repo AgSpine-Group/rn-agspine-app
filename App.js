@@ -14,6 +14,7 @@ import configStore from './redux/store';
 import fbInitialize from './firebase';
 import LoginScreen from './screens/LoginScreen';
 import { getAndPersistProfileAsync } from './redux/actions/profile';
+import { isThisISOWeek } from 'date-fns';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,9 +23,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export const AuthenticationWrapper = ({ authed }) => {
+export const AuthenticationWrapper = ({ authed, handleLogout }) => {
   if (authed) {
-    return <AppNavigator />;
+    return <AppNavigator handleLogout={handleLogout} />;
   }
 
   return <LoginScreen />;
@@ -94,6 +95,19 @@ export default class App extends React.Component {
     });
   };
 
+
+  handleLogout = async () => {
+    try {
+      await firebase
+        .auth()
+        .signOut()
+        .then(res => console.log(res));
+    } catch (ex) {
+      console.log(ex);
+      alert(ex);
+    }
+  };
+
   render() {
     const { isLoadingComplete, isLoggedIn, store, persistor } = this.state;
     if (!isLoadingComplete) {
@@ -114,7 +128,7 @@ export default class App extends React.Component {
           <NetworkWrapper dispatch={store.dispatch}>
             <View style={styles.container}>
               {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-              <AuthenticationWrapper authed={isLoggedIn} />
+              <AuthenticationWrapper authed={isLoggedIn} handleLogout={this.handleLogout} />
             </View>
           </NetworkWrapper>
         </PersistGate>
