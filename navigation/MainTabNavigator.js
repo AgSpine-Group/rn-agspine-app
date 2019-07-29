@@ -1,6 +1,13 @@
 import React from 'react';
-import { TouchableOpacity, Image, View, SafeAreaView, Button, Text } from 'react-native';
 import firebase from 'firebase';
+import {
+  TouchableOpacity,
+  Image,
+  View,
+  SafeAreaView,
+  Text,
+  TouchableHighlight,
+} from 'react-native';
 import {
   createStackNavigator,
   createBottomTabNavigator,
@@ -13,6 +20,8 @@ import { PRIMARY } from '../constants/Colors';
 import SettingsScreen from '../screens/SettingsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import FormsScreen from '../screens/FormListScreen';
+import AuthLoadingScreen from '../screens/AuthScreen';
+import LoginScreen from '../screens/LoginScreen';
 import CalculatorListScreen from '../screens/CalculatorListScreen';
 import LocationListScreen from '../screens/LocationListScreen';
 import AreaScreen from '../screens/AreaScreen';
@@ -56,7 +65,7 @@ const topHeaderStyles = navigation => ({
 
 const HomeStack = createStackNavigator({
   Home: {
-    screen: HomeScreen,
+    screen: SubmittedForms,
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state;
       return topHeaderStyles(navigation);
@@ -141,13 +150,13 @@ const MainTabNavigator = createBottomTabNavigator(
       screen: FormStack,
       navigationOptions: ({ navigation }) => {
         const { index } = navigation.state;
-        return ({
+        return {
           tabBarLabel: 'Forms',
           tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons focused={focused} name="clipboard-text" label="Forms" />
           ),
-          tabBarVisible: index !== 1
-        })
+          tabBarVisible: index !== 1,
+        };
       },
     },
   },
@@ -206,12 +215,27 @@ const MainNavigator = createDrawerNavigator(
               paddingBottom: 13,
             }}
           >
-            <Icon name="setting" size={25} color="black" style={{ paddingLeft: 16 }} {...props} />
-            <Text
-              style={{ color: 'black', alignSelf: 'center', marginLeft: 32, fontWeight: 'bold' }}
-            >
-              Signout
-            </Text>
+            <TouchableHighlight onPress={() => firebase.auth().signOut()}>
+              <React.Fragment>
+                <Icon
+                  name="setting"
+                  size={25}
+                  color="black"
+                  style={{ paddingLeft: 16 }}
+                  {...props}
+                />
+                <Text
+                  style={{
+                    color: 'black',
+                    alignSelf: 'center',
+                    marginLeft: 32,
+                    fontWeight: 'bold',
+                  }}
+                >
+                  Signout
+                </Text>
+              </React.Fragment>
+            </TouchableHighlight>
           </View>
         </SafeAreaView>
       </View>
@@ -231,4 +255,10 @@ export const DrawerIcon = props => (
   </TouchableOpacity>
 );
 
-export { MainNavigator };
+const LoadingNavigator = createStackNavigator({
+  AuthLoading: AuthLoadingScreen,
+});
+
+const AuthNavigator = createStackNavigator({ SignIn: LoginScreen });
+
+export { MainNavigator, LoadingNavigator, AuthNavigator };

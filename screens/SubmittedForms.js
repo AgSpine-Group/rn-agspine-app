@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Container, Content, List, ListItem, Text } from 'native-base';
 import { fetchSubmittedFormsAsync } from '../redux/actions/submitted_forms';
+import { getAndPersistProfileAsync } from '../redux/actions/profile';
 import { dateUtils } from '../utils';
 
 const ListItemComponent = ({ data }) => (
@@ -23,14 +24,22 @@ ListItemComponent.propTypes = {
 };
 
 class SubmitedList extends React.Component {
-  static navigationOptions = {
-    title: 'Submitted forms',
+  shouldComponentUpdate(nextProps) {
+    if (this.props.profile.organisationId !== nextProps.profile.organisationId) {
+      return true;
+    }
+    return false;
+  }
+
+  componentDidUpdate = async prevProps => {
+    if (prevProps.profile.organisationId !== this.props.profile.organisationId) {
+      this.props.fetchSubmittedFormsAsync();
+    }
   };
 
   render() {
-    this.componentDidMount = async () => {
-      await this.props.fetchSubmittedFormsAsync();
-    };
+    console.log('this.props.submittedFormData');
+    console.log(this.props.submittedFormData);
     return (
       <Container>
         <Content>
@@ -64,6 +73,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   fetchSubmittedFormsAsync,
+  getAndPersistProfileAsync,
 };
 
 export default connect(

@@ -7,13 +7,10 @@ import * as Icon from '@expo/vector-icons';
 import Font from 'expo-font';
 
 import { PersistGate } from 'redux-persist/integration/react';
-import PropTypes from 'prop-types';
 import NetworkWrapper from './components/NetworkWrapper';
 import AppNavigator from './navigation/AppNavigator';
 import configStore from './redux/store';
 import fbInitialize from './firebase';
-import LoginScreen from './screens/LoginScreen';
-import { getAndPersistProfileAsync } from './redux/actions/profile';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,24 +19,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export const AuthenticationWrapper = ({ authed }) => {
-  if (authed) {
-    return <AppNavigator />;
-  }
-
-  return <LoginScreen />;
-};
-
-AuthenticationWrapper.propTypes = {
-  authed: PropTypes.bool.isRequired,
-};
-
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoadingComplete: false,
-      isLoggedIn: false,
       persistor: {},
       store: {},
     };
@@ -50,24 +34,21 @@ export default class App extends React.Component {
     }
   }
 
+  handleFinishLoading = async () => {
+    return this.setState({ isLoadingComplete: true });
+  };
+
   loadResourcesAsync = async () => {
     return Promise.all([
       this.setPersistedState(),
-      this.checkAuth(),
       Font.loadAsync({
         ...Icon.Ionicons.font,
-
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
       }),
     ]);
   };
 
   handleLoadingError = error => error;
-
-  handleFinishLoading = async () => {
-    await this.setPersistedProfile();
-    return this.setState({ isLoadingComplete: true });
-  };
 
   setPersistedState = async () => {
     const { persistor, store } = configStore();
@@ -78,25 +59,8 @@ export default class App extends React.Component {
     });
   };
 
-  setPersistedProfile = async () => {
-    const { store } = this.state;
-    return store.dispatch(getAndPersistProfileAsync());
-  };
-
-  checkAuth = async () => {
-    await firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.setState({
-          isLoggedIn: true,
-        });
-      }
-      return null;
-    });
-  };
-
-
   render() {
-    const { isLoadingComplete, isLoggedIn, store, persistor } = this.state;
+    const { isLoadingComplete, store, persistor } = this.state;
     if (!isLoadingComplete) {
       return (
         <AppLoading
@@ -115,7 +79,7 @@ export default class App extends React.Component {
           <NetworkWrapper dispatch={store.dispatch}>
             <View style={styles.container}>
               {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-              <AuthenticationWrapper authed={isLoggedIn} />
+              <AppNavigator />
             </View>
           </NetworkWrapper>
         </PersistGate>
