@@ -10,6 +10,8 @@ const PRIMARY = {
 };
 
 const GREY = {
+  100: '#F7FAF7',
+  200: '#EBF0EB',
   300: '#EDF0ED',
   400: '#CFD7CE',
   500: '#939C93',

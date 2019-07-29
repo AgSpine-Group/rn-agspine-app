@@ -94,6 +94,7 @@ export default class App extends React.Component {
     });
   };
 
+
   render() {
     const { isLoadingComplete, isLoggedIn, store, persistor } = this.state;
     if (!isLoadingComplete) {
