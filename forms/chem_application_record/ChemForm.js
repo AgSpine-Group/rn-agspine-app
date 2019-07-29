@@ -301,7 +301,6 @@ const BottomButtons = ({
   next,
   isLast,
   isFirst,
-  handleSubmit,
   previous
 }) =>
   <View style={style.bottomContainer}>
@@ -309,9 +308,6 @@ const BottomButtons = ({
       <Button onPress={previous} style={isFirst ? style.disabled : style.previousButton} disabled={isFirst}>
         <Text style={{ color: isFirst ? GREY[400] : PRIMARY[400] }}>Back</Text>
       </Button>
-      {/* <Button onPress={isLast ? next : handleSubmit} style={isLast ? style.disabled : style.nextButton} disabled={isLast}>
-        <Text>Next</Text>
-      </Button> */}
       <Button onPress={next} style={isLast ? style.disabled : style.nextButton} disabled={isLast}>
         <Text>Next</Text>
       </Button>
@@ -405,7 +401,7 @@ class ChemForm extends React.Component {
           </View>
         </Container>
         <BottomButtons
-          next={this.handleIncrement}
+          next={isLast ? handleSubmit : this.handleIncrement}
           previous={this.handleDecrement}
           isLast={isLast}
           isFirst={isFirst}

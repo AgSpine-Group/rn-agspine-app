@@ -208,7 +208,6 @@ const MainNavigator = createDrawerNavigator(
           >
             <Icon name="setting" size={25} color="black" style={{ paddingLeft: 16 }} {...props} />
             <Text
-              onPress={() => props.handleLogout()}
               style={{ color: 'black', alignSelf: 'center', marginLeft: 32, fontWeight: 'bold' }}
             >
               Signout

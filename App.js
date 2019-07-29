@@ -14,7 +14,6 @@ import configStore from './redux/store';
 import fbInitialize from './firebase';
 import LoginScreen from './screens/LoginScreen';
 import { getAndPersistProfileAsync } from './redux/actions/profile';
-import { isThisISOWeek } from 'date-fns';
 
 const styles = StyleSheet.create({
   container: {
