@@ -1,7 +1,7 @@
 import React from 'react';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, ScrollView, View, Dimensions } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import {
   Container,
@@ -137,11 +137,17 @@ const DateAndLocation = ({ profile, handleChange, errors, values, values: { loca
       style={{ height: 100 }}
       iosIcon={<FormIcon name="home" />}
       placeholderStyle={{ maxWidth: '90%' }}
-      onValueChange={l => handleChange('location')({ id: l.id, locationName: l.locationName })}
-      selectedValue={location.locationName}
+      onValueChange={id => {
+        const selectedLocation = profile.locations.find(locations => locations.id === id);
+        handleChange('location')({
+          id: selectedLocation.id,
+          locationName: selectedLocation.locationName,
+        });
+      }}
+      selectedValue={location.id}
     >
       {profile.locations.map(l => {
-        return <Picker.Item label={l.locationName} value={l} key={l.id} width={100} />;
+        return <Picker.Item label={l.locationName} value={l.id} key={l.id} width={100} />;
       })}
     </Picker>
     <ErrorMessage errors={get(errors, 'location.id', '')} />
@@ -173,11 +179,17 @@ const Application = ({ profile, values, values: { location }, errors, handleChan
       style={{ height: 100 }}
       iosIcon={<FormIcon name="home" />}
       placeholderStyle={{ maxWidth: '90%' }}
-      onValueChange={l => handleChange('location')({ id: l.id, locationName: l.locationName })}
-      selectedValue={location.locationName}
+      onValueChange={id => {
+        const selectedLocation = profile.locations.find(locations => locations.id === id);
+        handleChange('location')({
+          id: selectedLocation.id,
+          locationName: selectedLocation.locationName,
+        });
+      }}
+      selectedValue={location.id}
     >
       {profile.locations.map(l => {
-        return <Picker.Item label={l.locationName} value={l} key={l.id} width={100} />;
+        return <Picker.Item label={l.locationName} value={l.id} key={l.id} width={100} />;
       })}
     </Picker>
     <ErrorMessage errors={get(errors, 'location.id', '')} />
@@ -197,7 +209,7 @@ const Application = ({ profile, values, values: { location }, errors, handleChan
 );
 
 const AreaLocation = ({ values, location, profile, errors, handleChange, area }) => (
-  <>
+  <ScrollView>
     <InputContainer
       label="Applicator name"
       onChange={handleChange('applicatorName')}
@@ -210,18 +222,19 @@ const AreaLocation = ({ values, location, profile, errors, handleChange, area })
       style={{ height: 100 }}
       iosIcon={<FormIcon name="location" />}
       placeholderStyle={{ maxWidth: '90%' }}
-      onValueChange={val =>
+      onValueChange={id => {
+        const selectedArea = profile.areas.find(ar => ar.id === id);
         handleChange('area.identification')({
-          id: val.id,
-          areaName: val.areaName,
-        })
-      }
-      selectedValue={area.identification.areaName}
+          id: selectedArea.id,
+          areaName: selectedArea.areaName,
+        });
+      }}
+      selectedValue={area.identification.id}
     >
       {(profile.areas || [])
         .filter(a => a.location.id === location.id)
         .map(x => {
-          return <Picker.Item label={x.areaName} value={x} key={x.id} width={100} />;
+          return <Picker.Item label={x.areaName} value={x.id} key={x.id} width={100} />;
         })}
     </Picker>
     <ErrorMessage errors={get(errors, 'area.identification.id', '')} />
@@ -242,11 +255,11 @@ const AreaLocation = ({ values, location, profile, errors, handleChange, area })
       value={area.cropSituation}
     />
     <InputContainer label="Comment:" onChange={handleChange('area.comment')} value={area.comment} />
-  </>
+  </ScrollView>
 );
 
 const PestInfo = ({ pestDetails, values, handleChange }) => (
-  <>
+  <ScrollView>
     <InputContainer
       label="Pest type:"
       onChange={handleChange('pestDetails.pestType')}
@@ -267,7 +280,7 @@ const PestInfo = ({ pestDetails, values, handleChange }) => (
       onChange={handleChange('pestDetails.comments')}
       value={pestDetails.comments}
     />
-  </>
+  </ScrollView>
 );
 
 const BottomButtons = ({ next, isLast, isFirst, previous }) => (
@@ -280,8 +293,8 @@ const BottomButtons = ({ next, isLast, isFirst, previous }) => (
       >
         <Text style={{ color: isFirst ? GREY[400] : PRIMARY[400] }}>Back</Text>
       </Button>
-      <Button onPress={next} style={isLast ? style.disabled : style.nextButton} disabled={isLast}>
-        <Text>Next</Text>
+      <Button onPress={next} style={style.nextButton}>
+        <Text>{isLast ? 'Submit' : 'Next'}</Text>
       </Button>
     </View>
   </View>
@@ -375,8 +388,8 @@ class ChemForm extends React.Component {
         <BottomButtons
           next={isLast ? handleSubmit : this.handleIncrement}
           previous={this.handleDecrement}
-          isLast={isLast}
           isFirst={isFirst}
+          isLast={isLast}
         />
       </Container>
     );
