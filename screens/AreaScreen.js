@@ -3,14 +3,30 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { Container, Text, List, ListItem } from 'native-base';
+import { View, StyleSheet, ScrollView, Image } from 'react-native';
+import { Container, Text, List, ListItem, Button } from 'native-base';
 import { fetchAreaAsync, fetchAreaFormsAsync } from '../redux/actions/area';
-import { GREY } from '../constants/Colors';
+import { GREY, PRIMARY } from '../constants/Colors';
 
 const styles = StyleSheet.create({
   background: {
     backgroundColor: GREY[300],
+  },
+  emptyContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addButton: {
+    backgroundColor: PRIMARY[300],
+    marginTop: 8,
   },
   content: {
     display: 'flex',
@@ -73,13 +89,30 @@ class AreaScreen extends React.Component {
   };
 
   render() {
-    const {
-      area,
-      area: { location },
-      submittedForms,
-    } = this.props;
+    const { area, submittedForms, loading } = this.props;
 
     const formsByDate = _.groupBy(submittedForms, 'date');
+
+    if (loading) {
+      return <Text>Loading</Text>;
+    }
+
+    if (submittedForms.length === 0) {
+      return (
+        <Container style={styles.emptyContainer}>
+          <View style={styles.emptyContent}>
+            <Text style={styles.locationText}>No submissions for this area</Text>
+            <Image
+              style={{ width: 250, height: 250 }}
+              source={require('./../assets/images/Empty.png')}
+            />
+            <Button block style={styles.addButton}>
+              <Text style={{ color: PRIMARY[500] }}>Add a submission</Text>
+            </Button>
+          </View>
+        </Container>
+      );
+    }
 
     return (
       <ScrollView>
@@ -144,6 +177,7 @@ AreaScreen.propTypes = {
 const mapStateToProps = state => ({
   area: state.area.data,
   submittedForms: state.areaForms.data,
+  loading: state.areaForms.loading,
 });
 
 const mapDispatchToProps = {

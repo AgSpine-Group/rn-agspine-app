@@ -29,7 +29,6 @@ export const fetchAreaAsync = id => async dispatch => {
       .get()
       .then(snapshot => {
         snapshot.forEach(snap => {
-          console.log(snap.data());
           dispatch(fetchAreaSuccess(snap.data()));
         });
       });
