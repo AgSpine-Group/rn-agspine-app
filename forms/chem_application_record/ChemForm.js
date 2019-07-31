@@ -30,7 +30,7 @@ const style = StyleSheet.create({
     backgroundColor: '#fff',
     width: '100%',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   contentContainer: {
     display: 'flex',
@@ -40,10 +40,10 @@ const style = StyleSheet.create({
   progressContainer: {
     padding: 20,
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   progress: {
-    flex: 1
+    flex: 1,
   },
   progressTextContainer: {
     display: 'flex',
@@ -54,15 +54,15 @@ const style = StyleSheet.create({
   },
   textAlignLeft: {
     width: '80%',
-    textAlign: 'left'
+    textAlign: 'left',
   },
   titleText: {
     fontSize: 18,
-    color: GREY[800]
+    color: GREY[800],
   },
   nextText: {
     fontSize: 14,
-    color: GREY[600]
+    color: GREY[600],
   },
   bottomContainer: {
     position: 'absolute',
@@ -71,14 +71,14 @@ const style = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: GREY[200]
+    backgroundColor: GREY[200],
   },
   buttonContainer: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '90%',
-    padding: 15
+    padding: 15,
   },
   nextButton: {
     width: '45%',
@@ -100,7 +100,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: PRIMARY[300],
-  }
+  },
 });
 
 export const FormIcon = ({ name }) => (
@@ -130,15 +130,7 @@ InputContainer.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-const DateAndLocation = ({
-  profile,
-  handleChange,
-  errors,
-  values,
-  values: {
-    location
-  }
-}) =>
+const DateAndLocation = ({ profile, handleChange, errors, values, values: { location } }) => (
   <>
     <Picker
       placeholder="Select a location"
@@ -148,7 +140,7 @@ const DateAndLocation = ({
       onValueChange={l => handleChange('location')({ id: l.id, locationName: l.locationName })}
       selectedValue={location.locationName}
     >
-      {(profile.locations || []).map(l => {
+      {profile.locations.map(l => {
         return <Picker.Item label={l.locationName} value={l} key={l.id} width={100} />;
       })}
     </Picker>
@@ -166,16 +158,9 @@ const DateAndLocation = ({
     </Item>
     <ErrorMessage errors={get(errors, 'date', '')} />
   </>
+);
 
-const Application = ({
-  profile,
-  values,
-  values: {
-    location
-  },
-  errors,
-  handleChange,
-}) =>
+const Application = ({ profile, values, values: { location }, errors, handleChange }) => (
   <>
     <InputContainer
       label="Applicator name"
@@ -209,15 +194,9 @@ const Application = ({
     </Item>
     <ErrorMessage errors={get(errors, 'date', '')} />
   </>
+);
 
-const AreaLocation = ({
-  values,
-  location,
-  profile,
-  errors,
-  handleChange,
-  area
-}) =>
+const AreaLocation = ({ values, location, profile, errors, handleChange, area }) => (
   <>
     <InputContainer
       label="Applicator name"
@@ -262,18 +241,11 @@ const AreaLocation = ({
       onChange={handleChange('area.cropSituation')}
       value={area.cropSituation}
     />
-    <InputContainer
-      label="Comment:"
-      onChange={handleChange('area.comment')}
-      value={area.comment}
-    />
+    <InputContainer label="Comment:" onChange={handleChange('area.comment')} value={area.comment} />
   </>
+);
 
-const PestInfo = ({
-  pestDetails,
-  values,
-  handleChange
-}) =>
+const PestInfo = ({ pestDetails, values, handleChange }) => (
   <>
     <InputContainer
       label="Pest type:"
@@ -296,16 +268,16 @@ const PestInfo = ({
       value={pestDetails.comments}
     />
   </>
+);
 
-const BottomButtons = ({
-  next,
-  isLast,
-  isFirst,
-  previous
-}) =>
+const BottomButtons = ({ next, isLast, isFirst, previous }) => (
   <View style={style.bottomContainer}>
     <View style={style.buttonContainer}>
-      <Button onPress={previous} style={isFirst ? style.disabled : style.previousButton} disabled={isFirst}>
+      <Button
+        onPress={previous}
+        style={isFirst ? style.disabled : style.previousButton}
+        disabled={isFirst}
+      >
         <Text style={{ color: isFirst ? GREY[400] : PRIMARY[400] }}>Back</Text>
       </Button>
       <Button onPress={next} style={isLast ? style.disabled : style.nextButton} disabled={isLast}>
@@ -313,33 +285,34 @@ const BottomButtons = ({
       </Button>
     </View>
   </View>
+);
 
 const forms = [
   {
     name: 'Date and Location',
-    component: DateAndLocation
+    component: DateAndLocation,
   },
   {
     name: 'Application',
-    component: Application
+    component: Application,
   },
   {
     name: 'AreaLocation',
-    component: AreaLocation
+    component: AreaLocation,
   },
   {
     name: 'Pest Info',
-    component: PestInfo
-  }
-]
+    component: PestInfo,
+  },
+];
 
 /* eslint-disable */
 class ChemForm extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      progress: 0
-    }
+      progress: 0,
+    };
   }
 
   handleIncrement = () => {
@@ -347,32 +320,28 @@ class ChemForm extends React.Component {
     const inc = current + 1;
 
     this.setState({
-      progress: inc
-    })
-  }
+      progress: inc,
+    });
+  };
 
   handleDecrement = () => {
     const current = this.state.progress;
     const inc = current - 1;
     this.setState({
-      progress: inc
-    })
-  }
+      progress: inc,
+    });
+  };
 
   render() {
     const {
-      values,
       values: { area, pestDetails, location },
-      handleChange,
       handleSubmit,
-      profile,
-      errors,
     } = this.props;
 
     const Form = forms[this.state.progress].component;
-    const progress = Math.round(((this.state.progress + 1) / forms.length) * 100)
-    const isLast = this.state.progress + 1 === forms.length
-    const isFirst = this.state.progress === 0
+    const progress = Math.round(((this.state.progress + 1) / forms.length) * 100);
+    const isLast = this.state.progress + 1 === forms.length;
+    const isFirst = this.state.progress === 0;
 
     return (
       <Container style={style.background}>
@@ -384,20 +353,23 @@ class ChemForm extends React.Component {
               fill={progress}
               tintColor={SECONDARY[300]}
               onAnimationComplete={() => console.log('onAnimationComplete')}
-              backgroundColor={SECONDARY[200]} />
+              backgroundColor={SECONDARY[200]}
+            />
           </View>
           <View style={style.progressTextContainer}>
-            <Text style={Object.assign({}, style.textAlignLeft, style.titleText)}>{forms[this.state.progress].name}</Text>
-            {
-              !isLast && (
-                <Text style={Object.assign({}, style.textAlignLeft, style.nextText)}>Next: {forms[this.state.progress + 1].name}</Text>
-              )
-            }
+            <Text style={Object.assign({}, style.textAlignLeft, style.titleText)}>
+              {forms[this.state.progress].name}
+            </Text>
+            {!isLast && (
+              <Text style={Object.assign({}, style.textAlignLeft, style.nextText)}>
+                Next: {forms[this.state.progress + 1].name}
+              </Text>
+            )}
           </View>
         </View>
         <Container style={style.contentBackground}>
           <View style={style.contentContainer}>
-            <Form {...this.props} />
+            <Form {...this.props} {...{ area, pestDetails, location }} />
           </View>
         </Container>
         <BottomButtons
@@ -407,9 +379,8 @@ class ChemForm extends React.Component {
           isFirst={isFirst}
         />
       </Container>
-    )
+    );
   }
-
 }
 
 export default ChemForm;

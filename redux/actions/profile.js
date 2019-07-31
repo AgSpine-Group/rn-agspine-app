@@ -14,7 +14,7 @@ const profileCreateFailure = error => ({
   error,
 });
 
-const getAndPersistProfileAsync = () => async dispatch => {
+export const getAndPersistProfileAsync = () => async dispatch => {
   // eslint-disable-next-line
   firebase.auth().onAuthStateChanged(async user => {
     try {
@@ -88,7 +88,7 @@ const getAndPersistProfileAsync = () => async dispatch => {
 
 const initialState = {};
 
-const profileReducer = (state = initialState, action) => {
+export const profileReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'PROFILE_CREATE_SUCCESS':
       return Object.assign({}, state, action.payload);
@@ -101,5 +101,3 @@ const profileReducer = (state = initialState, action) => {
 };
 
 export default profileReducer;
-
-export { getAndPersistProfileAsync, profileReducer };
