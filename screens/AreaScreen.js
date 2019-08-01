@@ -5,8 +5,10 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { Container, Text, List, ListItem, Button } from 'native-base';
-import { fetchAreaAsync, fetchAreaFormsAsync } from '../redux/actions/area';
+import { fetchAreaAsync, fetchAreaFormsAsync, clearAreaFormsAsync } from '../redux/actions/area';
 import { GREY, PRIMARY } from '../constants/Colors';
+
+import AreaLoading from '../components/Loading/AreaLoading';
 
 const styles = StyleSheet.create({
   background: {
@@ -84,8 +86,14 @@ class AreaScreen extends React.Component {
   componentDidMount = async () => {
     const areaId = this.props.navigation.getParam('areaId', null);
 
-    await this.props.fetchAreaAsync(areaId);
-    await this.props.fetchAreaFormsAsync(areaId);
+    setTimeout(async () => {
+      await this.props.fetchAreaAsync(areaId);
+      await this.props.fetchAreaFormsAsync(areaId);
+    }, 1000);
+  };
+
+  componentWillUnmount = () => {
+    this.props.clearAreaFormsAsync();
   };
 
   render() {
@@ -94,10 +102,10 @@ class AreaScreen extends React.Component {
     const formsByDate = _.groupBy(submittedForms, 'date');
 
     if (loading) {
-      return <Text>Loading</Text>;
+      return <AreaLoading />;
     }
 
-    if (submittedForms.length === 0) {
+    if (submittedForms.length === 0 && !loading) {
       return (
         <Container style={styles.emptyContainer}>
           <View style={styles.emptyContent}>
@@ -181,6 +189,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
+  clearAreaFormsAsync,
   fetchAreaAsync,
   fetchAreaFormsAsync,
 };
