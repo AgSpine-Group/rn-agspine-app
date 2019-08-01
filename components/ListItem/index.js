@@ -40,16 +40,11 @@ const style = StyleSheet.create({
 
 const icons = {
   calculator: Calculator,
-  form: Document
-}
+  form: Document,
+};
 
-const ListItem = ({
-  type,
-  description,
-  name,
-  action
-}) => {
-  const Component = icons[type]
+const ListItem = ({ type, description, name, action }) => {
+  const Component = icons[type];
   return (
     <Card>
       <CardItem button onPress={action}>
@@ -59,15 +54,14 @@ const ListItem = ({
         <View>
           <Body style={style.cardContent}>
             <Text style={Object.assign({ fontSize: 14 }, style.grey)}>{name}</Text>
-            <Text style={Object.assign({ fontSize: 10, marginTop: 8, width: 200 }, style.grey)}>
+            <Text style={Object.assign({ fontSize: 12, marginTop: 8, width: 200 }, style.grey)}>
               {description}
             </Text>
           </Body>
         </View>
       </CardItem>
     </Card>
-  )
-}
+  );
+};
 
-
-export default ListItem
+export default ListItem;

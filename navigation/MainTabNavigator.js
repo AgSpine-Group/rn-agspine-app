@@ -18,7 +18,6 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { MaterialCommunityIcons, MaterialIcons } from '../components/TabBarIcon';
 import { PRIMARY } from '../constants/Colors';
 import SettingsScreen from '../screens/SettingsScreen';
-import HomeScreen from '../screens/HomeScreen';
 import FormsScreen from '../screens/FormListScreen';
 import AuthLoadingScreen from '../screens/AuthScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -92,9 +91,17 @@ const FormStack = createStackNavigator({
   },
   FormScreen: {
     screen: FormScreen,
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state;
+      return backHeader(navigation);
+    },
   },
   SubmittedForms: {
     screen: SubmittedForms,
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state;
+      return backHeader(navigation);
+    },
   },
   // ....Add more screens for each stack here
 });
