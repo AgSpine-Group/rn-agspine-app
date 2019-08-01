@@ -130,7 +130,7 @@ InputContainer.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-const DateAndLocation = ({ profile, handleChange, errors, values, values: { location } }) => (
+const DateAndLocation = ({ profile, handleChange, errors, values, area, values: { location } }) => (
   <>
     <Picker
       placeholder="Select a location"
@@ -151,71 +151,6 @@ const DateAndLocation = ({ profile, handleChange, errors, values, values: { loca
       })}
     </Picker>
     <ErrorMessage errors={get(errors, 'location.id', '')} />
-
-    <Item stackedLabel>
-      <Label>Date of application</Label>
-      <DatePicker
-        placeHolderText="Select date"
-        placeHolderTextStyle={{ color: '#d3d3d3' }}
-        onDateChange={date => handleChange('date')(new Date(date).toISOString())}
-        value={values.date}
-        defaultDate={new Date()}
-      />
-    </Item>
-    <ErrorMessage errors={get(errors, 'date', '')} />
-  </>
-);
-
-const Application = ({ profile, values, values: { location }, errors, handleChange }) => (
-  <>
-    <InputContainer
-      label="Applicator name"
-      onChange={handleChange('applicatorName')}
-      value={values.applicatorName}
-    />
-    <ErrorMessage errors={get(errors, 'applicatorName', '')} />
-    <Picker
-      placeholder="Select a location"
-      style={{ height: 100 }}
-      iosIcon={<FormIcon name="home" />}
-      placeholderStyle={{ maxWidth: '90%' }}
-      onValueChange={id => {
-        const selectedLocation = profile.locations.find(locations => locations.id === id);
-        handleChange('location')({
-          id: selectedLocation.id,
-          locationName: selectedLocation.locationName,
-        });
-      }}
-      selectedValue={location.id}
-    >
-      {profile.locations.map(l => {
-        return <Picker.Item label={l.locationName} value={l.id} key={l.id} width={100} />;
-      })}
-    </Picker>
-    <ErrorMessage errors={get(errors, 'location.id', '')} />
-
-    <Item stackedLabel>
-      <Label>Date of application</Label>
-      <DatePicker
-        placeHolderText="Select date"
-        placeHolderTextStyle={{ color: '#d3d3d3' }}
-        onDateChange={date => handleChange('date')(new Date(date).toISOString())}
-        value={values.date}
-        defaultDate={new Date()}
-      />
-    </Item>
-    <ErrorMessage errors={get(errors, 'date', '')} />
-  </>
-);
-
-const AreaLocation = ({ values, location, profile, errors, handleChange, area }) => (
-  <ScrollView>
-    <InputContainer
-      label="Applicator name"
-      onChange={handleChange('applicatorName')}
-      value={values.applicatorName}
-    />
-    <ErrorMessage errors={get(errors, 'applicatorName', '')} />
 
     <Picker
       placeholder="Select an area"
@@ -240,6 +175,71 @@ const AreaLocation = ({ values, location, profile, errors, handleChange, area })
     <ErrorMessage errors={get(errors, 'area.identification.id', '')} />
 
     <InputContainer
+      label="Applicator name"
+      onChange={handleChange('applicatorName')}
+      value={values.applicatorName}
+    />
+    <ErrorMessage errors={get(errors, 'applicatorName', '')} />
+    <Item stackedLabel>
+      <Label>Date of application</Label>
+      <DatePicker
+        placeHolderText="Select date"
+        placeHolderTextStyle={{ color: '#d3d3d3' }}
+        onDateChange={date => handleChange('date')(new Date(date).toISOString())}
+        value={values.date}
+        defaultDate={new Date()}
+      />
+    </Item>
+    <ErrorMessage errors={get(errors, 'date', '')} />
+  </>
+);
+
+const ChemicalInfortion = ({ values, errors, handleChange }) => (
+  <>
+    <InputContainer
+      label="Chemical Product"
+      onChange={handleChange('chemicalDetails.product')}
+      value={values.chemicalDetails.product}
+    />
+    <ErrorMessage errors={get(errors, 'chemicalDetails.product', '')} />
+    <InputContainer
+      label="Action Group"
+      onChange={handleChange('chemicalDetails.actionGroup')}
+      value={values.chemicalDetails.actionGroup}
+    />
+    <InputContainer
+      label="Batch Number"
+      onChange={handleChange('chemicalDetails.batchNo')}
+      value={values.chemicalDetails.batchNo}
+    />
+    <InputContainer
+      label="Rate"
+      onChange={handleChange('chemicalDetails.rate')}
+      value={values.chemicalDetails.rate}
+    />
+    <InputContainer
+      label="WHP"
+      onChange={handleChange('chemicalDetails.whp')}
+      value={values.chemicalDetails.whp}
+    />
+    <Item stackedLabel>
+      <Label>Date of application</Label>
+      <DatePicker
+        placeHolderText="Select date"
+        placeHolderTextStyle={{ color: '#d3d3d3' }}
+        onDateChange={date =>
+          handleChange('chemicalDetails.whpEndDate')(new Date(date).toISOString())
+        }
+        value={values.chemicalDetails.whpEndDate}
+        defaultDate={new Date()}
+      />
+    </Item>
+  </>
+);
+
+const AreaInformation = ({ handleChange, area }) => (
+  <ScrollView>
+    <InputContainer
       label="Treatment area:"
       onChange={handleChange('area.treatmentArea')}
       value={area.treatmentArea}
@@ -257,8 +257,62 @@ const AreaLocation = ({ values, location, profile, errors, handleChange, area })
     <InputContainer label="Comment:" onChange={handleChange('area.comment')} value={area.comment} />
   </ScrollView>
 );
+const ApplicationDetails = ({ values, handleChange }) => (
+  <ScrollView>
+    <InputContainer
+      label="Nozzle Brand:"
+      onChange={handleChange('applicationDetails.nozzleBrand')}
+      value={values.applicationDetails.nozzleBrand}
+    />
+    <InputContainer
+      label="Nozzle Type:"
+      onChange={handleChange('applicationDetails.nozzleType')}
+      value={values.applicationDetails.nozzleType}
+    />
+    <InputContainer
+      label="Spray Quality:"
+      onChange={handleChange('applicationDetails.sprayQuality')}
+      value={values.applicationDetails.sprayQuality}
+    />
+    <InputContainer
+      label="Angle:"
+      onChange={handleChange('applicationDetails.angle')}
+      value={values.applicationDetails.angle}
+    />
+    <InputContainer
+      label="Size:"
+      onChange={handleChange('applicationDetails.size')}
+      value={values.applicationDetails.size}
+    />
+    <InputContainer
+      label="Pressure:"
+      onChange={handleChange('applicationDetails.pressure')}
+      value={values.applicationDetails.pressure}
+    />
+    <InputContainer
+      label="Water rate:"
+      onChange={handleChange('applicationDetails.waterRate')}
+      value={values.applicationDetails.waterRate}
+    />
+    <InputContainer
+      label="Water rate:"
+      onChange={handleChange('applicationDetails.waterRate')}
+      value={values.applicationDetails.waterRate}
+    />
+    <InputContainer
+      label="Quantity Applied:"
+      onChange={handleChange('applicationDetails.quantityApplied')}
+      value={values.applicationDetails.quantityApplied}
+    />
+    <InputContainer
+      label="Water source:"
+      onChange={handleChange('applicationDetails.waterSource')}
+      value={values.applicationDetails.waterSource}
+    />
+  </ScrollView>
+);
 
-const PestInfo = ({ pestDetails, values, handleChange }) => (
+const PestInfo = ({ pestDetails, handleChange }) => (
   <ScrollView>
     <InputContainer
       label="Pest type:"
@@ -277,8 +331,8 @@ const PestInfo = ({ pestDetails, values, handleChange }) => (
     />
     <InputContainer
       label="Comments:"
-      onChange={handleChange('pestDetails.comments')}
-      value={pestDetails.comments}
+      onChange={handleChange('pestDetails.comment')}
+      value={pestDetails.comment}
     />
   </ScrollView>
 );
@@ -306,16 +360,20 @@ const forms = [
     component: DateAndLocation,
   },
   {
-    name: 'Application',
-    component: Application,
+    name: 'Area',
+    component: AreaInformation,
   },
   {
-    name: 'AreaLocation',
-    component: AreaLocation,
-  },
-  {
-    name: 'Pest Info',
+    name: 'Pest',
     component: PestInfo,
+  },
+  {
+    name: 'Chemical',
+    component: ChemicalInfortion,
+  },
+  {
+    name: 'Application Details',
+    component: ApplicationDetails,
   },
 ];
 

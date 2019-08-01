@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// eslint-disable-next-line
 class AreaScreen extends React.Component {
   componentDidMount = async () => {
     const areaId = this.props.navigation.getParam('areaId', null);
@@ -92,9 +91,30 @@ class AreaScreen extends React.Component {
     }, 1000);
   };
 
+  componentDidUpdate = prevProps => {
+    if (
+      prevProps.area.id &&
+      prevProps.area.id !== this.props.navigation.getParam('areaId', null) &&
+      !this.props.loading
+    ) {
+      setTimeout(async () => {
+        await this.props.fetchAreaAsync(this.props.navigation.getParam('areaId', null));
+        await this.props.fetchAreaFormsAsync(this.props.navigation.getParam('areaId', null));
+      }, 1000);
+    }
+  };
+
   componentWillUnmount = () => {
     this.props.clearAreaFormsAsync();
   };
+
+  componentShouldUpdate() {
+    if (this.props.loading) {
+      return false;
+    }
+
+    return true;
+  }
 
   render() {
     const { area, submittedForms, loading } = this.props;
@@ -132,23 +152,29 @@ class AreaScreen extends React.Component {
                 <View style={Object.assign({ marginTop: 20 }, styles.locationContainer)}>
                   <List>
                     <ListItem>
-                      <Text style={styles.monthTitle}>July</Text>
+                      <Text style={styles.monthTitle}>{moment(date).format('MMMM')}</Text>
                     </ListItem>
                   </List>
                 </View>
 
                 <View style={styles.locationContainer}>
                   <List>
-                    <ListItem style={styles.areaContainer}>
-                      <View style={styles.dateContainer}>
-                        <Text style={styles.monthText}>{moment(date).format('MMMM')}</Text>
-                        <Text style={styles.dayText}>{moment(date).format('dddd HH:MM:SS')}</Text>
-                      </View>
-                      <View style={styles.formContainer}>
-                        <Text style={styles.formName}>Chemical crop application</Text>
-                        <Text style={styles.userName}>Hyun Kim</Text>
-                      </View>
-                    </ListItem>
+                    {formsByDate[date].map(data => {
+                      return (
+                        <ListItem style={styles.areaContainer}>
+                          <View style={styles.dateContainer}>
+                            <Text style={styles.monthText}>{moment(date).format('Do MMMM')}</Text>
+                            <Text style={styles.dayText}>
+                              {moment(date).format('dddd HH:MM:SSA')}
+                            </Text>
+                          </View>
+                          <View style={styles.formContainer}>
+                            <Text style={styles.formName}>{data.formName}</Text>
+                            <Text style={styles.userName}>{data.applicatorName}</Text>
+                          </View>
+                        </ListItem>
+                      );
+                    })}
                   </List>
                 </View>
               </>
@@ -180,12 +206,14 @@ AreaScreen.propTypes = {
   submittedForms: PropTypes.shape().isRequired,
   fetchAreaFormsAsync: PropTypes.func.isRequired,
   fetchAreaAsync: PropTypes.func.isRequired,
+  clearAreaFormsAsync: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   area: state.area.data,
   submittedForms: state.areaForms.data,
-  loading: state.areaForms.loading,
+  loading: state.areaForms.loading || state.area.loading,
 });
 
 const mapDispatchToProps = {

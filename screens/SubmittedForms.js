@@ -38,8 +38,6 @@ class SubmitedList extends React.Component {
   };
 
   render() {
-    console.log('this.props.submittedFormData');
-    console.log(this.props.submittedFormData);
     return (
       <Container>
         <Content>

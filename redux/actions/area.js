@@ -66,8 +66,8 @@ export const areaReducer = (state = initialState, action) => {
 
     case FETCH_AREA_REQUEST: {
       return {
-        loading: true,
         ...state,
+        loading: true,
       };
     }
 

@@ -1,20 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
-import { Title, Container } from 'native-base';
+import { Container } from 'native-base';
 import { submitFormDataAsync } from '../redux/actions/form_submit';
 import forms from '../forms';
-
-const styles = StyleSheet.create({
-  formContainer: {
-    padding: 20,
-    display: 'flex',
-  },
-  formHeader: {
-    alignSelf: 'center',
-  },
-});
 
 class FormScreen extends React.Component {
   constructor(props) {
@@ -24,13 +13,13 @@ class FormScreen extends React.Component {
   }
 
   render() {
-    const header = this.form && this.form.title;
     return (
       <Container style={{ position: 'relative' }}>
         <this.form.Component
           profile={this.props.profile}
           navigation={this.props.navigation}
           formId={this.formId}
+          formName={this.form.title}
         />
       </Container>
     );
