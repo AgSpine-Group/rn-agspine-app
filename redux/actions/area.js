@@ -79,6 +79,7 @@ export const areaReducer = (state = initialState, action) => {
 
 const FETCH_AREA_FORMS_SUCCESS = 'FETCH_AREA_FORMS_SUCCESS';
 const FETCH_AREA_FORMS_REQUEST = 'FETCH_AREA_FORMS_REQUEST';
+const CLEAR_AREA_FORMS = 'CLEAR_AREA_FORMS';
 const FETCH_AREA_FORMS_ERROR = 'FETCH_AREA_FORMS_ERROR';
 
 const fetchAreaFormsRequest = () => ({
@@ -96,8 +97,15 @@ const fetchAreaFormsError = error => ({
   error,
 });
 
+const clearAreaForms = () => ({
+  type: CLEAR_AREA_FORMS,
+});
+
+export const clearAreaFormsAsync = () => async dispatch => dispatch(clearAreaForms());
+
 export const fetchAreaFormsAsync = id => async dispatch => {
-  fetchAreaFormsRequest();
+  dispatch(fetchAreaFormsRequest());
+
   try {
     let data = [];
 
@@ -124,7 +132,7 @@ export const fetchAreaFormsAsync = id => async dispatch => {
 const areaFormInitialState = {
   data: [],
   error: null,
-  loading: false,
+  loading: true,
 };
 
 export const areaFormReducer = (state = areaFormInitialState, action) => {
@@ -149,8 +157,14 @@ export const areaFormReducer = (state = areaFormInitialState, action) => {
 
     case FETCH_AREA_FORMS_REQUEST: {
       return {
-        loading: true,
         ...state,
+        loading: true,
+      };
+    }
+
+    case CLEAR_AREA_FORMS: {
+      return {
+        ...areaFormInitialState,
       };
     }
 

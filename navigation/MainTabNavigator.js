@@ -63,6 +63,13 @@ const topHeaderStyles = navigation => ({
   },
 });
 
+const backHeader = navigation => ({
+  headerTintColor: PRIMARY[100],
+  headerStyle: {
+    backgroundColor: PRIMARY[400],
+  },
+});
+
 const HomeStack = createStackNavigator({
   Home: {
     screen: SubmittedForms,
@@ -101,6 +108,10 @@ const LocationStack = createStackNavigator({
   },
   Area: {
     screen: AreaScreen,
+    navigationOptions: ({ navigation }) => {
+      const { routeName } = navigation.state;
+      return backHeader(navigation);
+    },
   },
   // ....Add more screens for each stack here
 });
