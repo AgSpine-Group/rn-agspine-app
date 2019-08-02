@@ -19,7 +19,7 @@ const chemFormData = {
     pestType: '',
     growthStage: '',
     density: '',
-    comments: '',
+    comment: '',
   },
   chemicalDetails: {
     product: '',

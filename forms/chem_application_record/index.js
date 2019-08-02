@@ -20,7 +20,7 @@ const validationSchema = Yup.object().shape({
   }),
 });
 
-const submitDataToFirebase = async ({ organisationId, values, formId }) => {
+const submitDataToFirebase = async ({ organisationId, values, formId, formName }) => {
   const formDataByOrganisationRef = firebase.firestore().collection('submittedForms');
 
   const { currentUser } = firebase.auth();
@@ -31,6 +31,7 @@ const submitDataToFirebase = async ({ organisationId, values, formId }) => {
     uid: currentUser.uid,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     updatedAt: null,
+    formName,
   };
 
   try {
@@ -40,50 +41,58 @@ const submitDataToFirebase = async ({ organisationId, values, formId }) => {
 
     return batchWrite.commit();
   } catch (ex) {
-    console.log(ex);
     throw ex;
   }
 };
 
-const submitData = async ({ organisationId, values, formId, navigation }) => {
-  await submitDataToFirebase({ organisationId, values, formId });
+const submitData = async ({ organisationId, values, formId, navigation, formName }) => {
+  await submitDataToFirebase({ organisationId, values, formId, formName });
 
-  navigation.navigate(
-    'Locations',
-    {},
-    NavigationActions.navigate({
+  navigation.popToTop();
+  navigation.navigate({
+    routeName: 'Locations',
+    action: NavigationActions.navigate({
       routeName: 'Area',
-      params: { areaId: values.area.identification.id },
-    })
-  );
+      params: {
+        areaId: values.area.identification.id,
+      },
+    }),
+  });
 };
 
-// eslint-disable-next-line
-export default class ChemicalApplicationForm extends React.Component {
-  render() {
-    return (
-      <Formik
-        initialValues={chemApplicationRecord}
-        onSubmit={values =>
-          submitData({
-            organisationId: this.props.profile.organisationId,
-            values,
-            formId: this.props.formId,
-            navigation: this.props.navigation,
-          })
-        }
-        validationSchema={validationSchema}
-        validateOnChange
-      >
-        {data => <ChemForm {...this.props} {...data} />}
-      </Formik>
-    );
-  }
-}
+const ChemicalApplicationForm = props => {
+  const {
+    formId,
+    formName,
+    navigation,
+    profile: { organisationId },
+  } = props;
+  return (
+    <Formik
+      initialValues={chemApplicationRecord}
+      onSubmit={values =>
+        submitData({
+          organisationId,
+          values,
+          formId,
+          formName,
+          navigation,
+        })
+      }
+      validationSchema={validationSchema}
+      validateOnChange
+    >
+      {data => <ChemForm {...props} {...data} />}
+    </Formik>
+  );
+};
 
 ChemicalApplicationForm.propTypes = {
   profile: PropTypes.shape({
     organisationId: PropTypes.string.isRequired,
   }).isRequired,
   formId: PropTypes.string.isRequired,
+  formName: PropTypes.string.isRequired,
 };
+
+export default ChemicalApplicationForm;
