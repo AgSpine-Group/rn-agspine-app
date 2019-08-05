@@ -131,7 +131,7 @@ InputContainer.propTypes = {
 };
 
 const DateAndLocation = ({ profile, handleChange, errors, values, area, values: { location } }) => (
-  <>
+  <ScrollView>
     <Picker
       placeholder="Select a location"
       style={{ height: 100 }}
@@ -185,17 +185,19 @@ const DateAndLocation = ({ profile, handleChange, errors, values, area, values: 
       <DatePicker
         placeHolderText="Select date"
         placeHolderTextStyle={{ color: '#d3d3d3' }}
-        onDateChange={date => handleChange('date')(new Date(date).toISOString())}
-        value={values.date}
+        onDateChange={date =>
+          handleChange('chemicalDetails.whpEndDate')(new Date(date).toISOString())
+        }
+        value={values.chemicalDetails.whpEndDate}
         defaultDate={new Date()}
       />
     </Item>
     <ErrorMessage errors={get(errors, 'date', '')} />
-  </>
+  </ScrollView>
 );
 
 const ChemicalInfortion = ({ values, errors, handleChange }) => (
-  <>
+  <ScrollView>
     <InputContainer
       label="Chemical Product"
       onChange={handleChange('chemicalDetails.product')}
@@ -234,7 +236,7 @@ const ChemicalInfortion = ({ values, errors, handleChange }) => (
         defaultDate={new Date()}
       />
     </Item>
-  </>
+  </ScrollView>
 );
 
 const AreaInformation = ({ handleChange, area }) => (
@@ -288,11 +290,6 @@ const ApplicationDetails = ({ values, handleChange }) => (
       label="Pressure:"
       onChange={handleChange('applicationDetails.pressure')}
       value={values.applicationDetails.pressure}
-    />
-    <InputContainer
-      label="Water rate:"
-      onChange={handleChange('applicationDetails.waterRate')}
-      value={values.applicationDetails.waterRate}
     />
     <InputContainer
       label="Water rate:"
@@ -423,7 +420,6 @@ class ChemForm extends React.Component {
               width={10}
               fill={progress}
               tintColor={SECONDARY[300]}
-              onAnimationComplete={() => console.log('onAnimationComplete')}
               backgroundColor={SECONDARY[200]}
             />
           </View>
