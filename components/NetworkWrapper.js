@@ -1,4 +1,4 @@
-import { NetInfo, SafeAreaView } from 'react-native';
+import { NetInfo } from 'react-native';
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { connectionState } from '../redux/actions/connection';
