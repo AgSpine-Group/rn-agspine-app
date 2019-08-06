@@ -21,11 +21,12 @@ import SettingsScreen from '../screens/SettingsScreen';
 import FormsScreen from '../screens/FormListScreen';
 import AuthLoadingScreen from '../screens/AuthScreen';
 import LoginScreen from '../screens/LoginScreen';
-import CalculatorListScreen from '../screens/CalculatorListScreen';
+
 import LocationListScreen from '../screens/LocationListScreen';
 import AreaScreen from '../screens/AreaScreen';
 import FormScreen from '../screens/FormScreen';
 import SubmittedForms from '../screens/SubmittedForms';
+
 // - AppSwitchNavigator
 // TODO move the auth section to the login/signup page
 //    - WelcomeScreen
@@ -55,26 +56,40 @@ const BottomTabNavigatorConfig = {
   },
 };
 
-const topHeaderStyles = navigation => ({
-  headerLeft: <DrawerIcon navigation={navigation} />,
+const topHeaderStyles = props => ({
+  headerLeft: <DrawerIcon navigation={props.navigation} />,
   headerStyle: {
     backgroundColor: PRIMARY[400],
   },
+  headerRight: (
+    <TouchableOpacity onPress={props.screenProps.openDrawer}>
+      <View style={{ padding: 12 }}>
+        <MaterialCommunityIcons focused name="calculator-variant" />
+      </View>
+    </TouchableOpacity>
+  ),
 });
 
-const backHeader = navigation => ({
+const backHeader = props => ({
   headerTintColor: PRIMARY[100],
   headerStyle: {
     backgroundColor: PRIMARY[400],
   },
+
+  headerRight: (
+    <TouchableOpacity onPress={props.screenProps.openDrawer}>
+      <View style={{ padding: 12 }}>
+        <MaterialCommunityIcons focused name="calculator-variant" />
+      </View>
+    </TouchableOpacity>
+  ),
 });
 
 const HomeStack = createStackNavigator({
   Home: {
     screen: SubmittedForms,
-    navigationOptions: ({ navigation }) => {
-      const { routeName } = navigation.state;
-      return topHeaderStyles(navigation);
+    navigationOptions: props => {
+      return topHeaderStyles(props);
     },
   },
 
@@ -84,23 +99,20 @@ const HomeStack = createStackNavigator({
 const FormStack = createStackNavigator({
   Forms: {
     screen: FormsScreen,
-    navigationOptions: ({ navigation }) => {
-      const { routeName } = navigation.state;
-      return topHeaderStyles(navigation);
+    navigationOptions: props => {
+      return topHeaderStyles(props);
     },
   },
   FormScreen: {
     screen: FormScreen,
-    navigationOptions: ({ navigation }) => {
-      const { routeName } = navigation.state;
-      return backHeader(navigation);
+    navigationOptions: props => {
+      return backHeader(props);
     },
   },
   SubmittedForms: {
     screen: SubmittedForms,
-    navigationOptions: ({ navigation }) => {
-      const { routeName } = navigation.state;
-      return backHeader(navigation);
+    navigationOptions: props => {
+      return backHeader(props);
     },
   },
   // ....Add more screens for each stack here
@@ -108,27 +120,14 @@ const FormStack = createStackNavigator({
 const LocationStack = createStackNavigator({
   Locations: {
     screen: LocationListScreen,
-    navigationOptions: ({ navigation }) => {
-      const { routeName } = navigation.state;
-      return topHeaderStyles(navigation);
+    navigationOptions: props => {
+      return topHeaderStyles(props);
     },
   },
   Area: {
     screen: AreaScreen,
-    navigationOptions: ({ navigation }) => {
-      const { routeName } = navigation.state;
-      return backHeader(navigation);
-    },
-  },
-  // ....Add more screens for each stack here
-});
-
-const CalculatorStack = createStackNavigator({
-  Calculators: {
-    screen: CalculatorListScreen,
-    navigationOptions: ({ navigation }) => {
-      const { routeName } = navigation.state;
-      return topHeaderStyles(navigation);
+    navigationOptions: props => {
+      return backHeader(props);
     },
   },
   // ....Add more screens for each stack here
@@ -155,19 +154,10 @@ const MainTabNavigator = createBottomTabNavigator(
         ),
       },
     },
-    Calculators: {
-      screen: CalculatorStack,
-      navigationOptions: {
-        tabBarLabel: 'Calculators',
-        tabBarIcon: ({ focused }) => (
-          <MaterialCommunityIcons focused={focused} name="calculator-variant" label="Calculators" />
-        ),
-      },
-    },
     Forms: {
       screen: FormStack,
-      navigationOptions: ({ navigation }) => {
-        const { index } = navigation.state;
+      navigationOptions: props => {
+        const { index } = props.navigation.state;
         return {
           tabBarLabel: 'Forms',
           tabBarIcon: ({ focused }) => (

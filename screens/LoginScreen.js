@@ -157,10 +157,7 @@ export default class LoginScreen extends React.Component {
 
   handleSignup = async () => {
     try {
-      await firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then(res => console.log(res));
+      await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password);
     } catch (ex) {
       console.log(ex);
       alert(ex);
@@ -169,10 +166,7 @@ export default class LoginScreen extends React.Component {
 
   handleLogin = async () => {
     try {
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then(res => console.log(res));
+      await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
     } catch (ex) {
       console.log(ex);
       alert(ex);
@@ -181,10 +175,7 @@ export default class LoginScreen extends React.Component {
 
   handleLogout = async () => {
     try {
-      await firebase
-        .auth()
-        .signOut()
-        .then(res => console.log(res));
+      await firebase.auth().signOut();
     } catch (ex) {
       console.log(ex);
       alert(ex);
