@@ -78,7 +78,7 @@ const backHeader = props => ({
 
   headerRight: (
     <TouchableOpacity onPress={props.screenProps.openDrawer}>
-      <View style={{ padding: 12 }}>
+      <View style={{ marginRight: 15 }}>
         <MaterialCommunityIcons focused name="calculator-variant" />
       </View>
     </TouchableOpacity>
